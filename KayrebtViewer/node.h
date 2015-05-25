@@ -19,6 +19,7 @@ public:
 	explicit Node(Agnode_t *v, Graph* graph, QGraphicsItem *parent = 0);
 	~Node();
 	virtual void hide();
+	bool hasHighlightedAncestor() const;
 
 signals:
 

@@ -10,10 +10,17 @@ Viewer::Viewer(QWidget *parent) :
 	ui(new Ui::Viewer)
 {
 	ui->setupUi(this);
-	_configDock = new QDockWidget(this);
+
+	QSettings settings;
+	_srcTree = settings.value("source tree").toString();
+	_symbDb = settings.value("symbol database").toString();
+	_diagdir = settings.value("diagrams dir").toString();
+
+	// TODO
+/*	_configDock = new QDockWidget(this);
 	addDockWidget(Qt::RightDockWidgetArea, _configDock);
 	_configDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-
+*/
 	_sourcesDock = new QDockWidget(this);
 	addDockWidget(Qt::RightDockWidgetArea, _sourcesDock);
 	_sourcesDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
@@ -36,7 +43,7 @@ Viewer::Viewer(QWidget *parent) :
 
 void Viewer::openGraph()
 {
-	openGraph(QFileDialog::getOpenFileName(this, tr("Select the diagram to open"), QDir::currentPath(),
+	openGraph(QFileDialog::getOpenFileName(this, tr("Select the diagram to open"), _diagdir,
 			  "GraphViz files (*.dot)"));
 }
 
@@ -61,14 +68,13 @@ void Viewer::openGraph(QString filename)
 			if (!found) {
 
 				subw = ui->docs->addSubWindow(new Drawing(filename));
-				subw->setWindowTitle(filename);
+				subw->setWindowTitle(QFileInfo(filename).canonicalFilePath());
 			}
 
 			ui->docs->setActiveSubWindow(subw);
 			subw->show();
 		} catch (std::runtime_error& e) {
-			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected is not a valid GraphViz file.\n\n"
-																  "The error received from GraphViz is: ") + e.what());
+			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected is not a valid GraphViz file.\n\n") + e.what());
 		}
 	}
 }

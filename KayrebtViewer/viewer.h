@@ -33,7 +33,9 @@ private:
   DatabaseViewer* _dbviewer;
 //  QList<Drawing *> _scenes;
 
-
+  QString _srcTree;
+  QString _symbDb;
+  QString _diagdir;
 };
 
 #endif // VIEWER_H

@@ -4,11 +4,12 @@
 SourceTreeWidget::SourceTreeWidget(QWidget *parent) :
 	QTreeView(parent)
 {
+	QString dir = QSettings().value("source tree").toString();
 	_fs = new QFileSystemModel;
-	_fs->setRootPath("/home/lgeorget/Documents/THESE/linux");
+	_fs->setRootPath(dir);
 
 	setModel(_fs);
-	setRootIndex(_fs->index("/home/lgeorget/Documents/THESE/linux"));
+	setRootIndex(_fs->index(dir));
 	for (int i = 1 ; i < _fs->columnCount() ; i++)
 		setColumnHidden(i, true); // mask all but first column
 

@@ -29,8 +29,8 @@ public:
 
 	const Agraph_t* getAgraph() const;
 	qreal getDpi() const;
-	bool hasHighlightedAncestor(Node* n);
-	bool hasHighlightedAncestor(Edge* e);
+	bool hasHighlightedAncestor(const Node* n);
+	bool hasHighlightedAncestor(const Edge* e);
 
 public slots:
 	void doLayout();

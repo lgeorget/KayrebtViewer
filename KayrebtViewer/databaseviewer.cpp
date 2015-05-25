@@ -5,6 +5,7 @@
 DatabaseViewer::DatabaseViewer(QWidget *parent) :
 	QWidget(parent)
 {
+	QString dbFile = QSettings().value("symbol database").toString();
 	_dbView = new QTableView(this);
 	_filterName = new QLineEdit(this);
 	_filterDir = new QLineEdit(this);
@@ -19,7 +20,7 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 	setLayout(mainLayout);
 
 	_dbBackend = QSqlDatabase::addDatabase("QSQLITE");
-	_dbBackend.setDatabaseName("/home/lgeorget/Documents/THESE/linux/global_symbols.db");
+	_dbBackend.setDatabaseName(dbFile);
 	_dbFilter = new DatabaseSortFilterProxyModel(this);
 
 	if (_dbBackend.open()) {
@@ -35,6 +36,7 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 		_dbView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_dbView->setSelectionBehavior(QAbstractItemView::SelectRows);
 		_dbView->setSortingEnabled(true);
+		_dbView->hideColumn(3); // hide line numbers
 
 		connect(_filterName, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
 		connect(_filterDir, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
@@ -58,13 +60,14 @@ void DatabaseViewer::selectFileAndDirectory(QString dir, QString file)
 
 void DatabaseViewer::symbolDoubleClicked(const QModelIndex& index)
 {
+	QSettings settings;
 	int row = index.row();
-	QString file = "/home/lgeorget/Documents/THESE/linux/" +
+	QString file = settings.value("source tree").toString() +
 			_dbFilter->sibling(row, 1, index).data().toString() + "/" +
 			_dbFilter->sibling(row, 2, index).data().toString();
 	emit fileSelected(file);
 
-	QString graph = "/home/lgeorget/Documents/THESE/actdiags/" +
+	QString graph = settings.value("diagrams dir").toString() +
 			_dbFilter->sibling(row, 1, index).data().toString() + "/" +
 			_dbFilter->sibling(row, 2, index).data().toString().remove(".c") + "/" +
 			_dbFilter->sibling(row, 0, index).data().toString() + ".dot";

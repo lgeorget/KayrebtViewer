@@ -17,8 +17,9 @@ public:
 	virtual QRectF boundingRect() const;
 	void highlight();
 	void unhighlight();
-	bool isHighlighted();
-	bool isUnhighlighted();
+	bool isHighlighted() const;
+	bool isUnhighlighted() const;
+	virtual bool hasHighlightedAncestor() const = 0;
 
 signals:
 
@@ -28,8 +29,9 @@ protected:
 	Graph* _graph;
 	QAbstractGraphicsShapeItem* _inner;
 
-	static const QPen DEFAULT_PEN;
-	static const QPen HIGHLIGHT_PEN;
+	static QPen defaultPen;
+	static QPen highlightPen;
+	static QBrush defaultBrush;
 };
 
 #endif // ELEMENT_H

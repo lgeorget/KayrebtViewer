@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     element.cpp \
     edge.cpp \
     drawing.cpp \
-    databasesortfilterproxymodel.cpp
+    databasesortfilterproxymodel.cpp \
+    preferencesdialog.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -37,9 +38,11 @@ HEADERS  += \
     element.h \
     edge.h \
     drawing.h \
-    databasesortfilterproxymodel.h
+    databasesortfilterproxymodel.h \
+    preferencesdialog.h
 
 FORMS    += \
-    viewer.ui
+    viewer.ui \
+    preferencesdialog.ui
 
 OTHER_FILES +=

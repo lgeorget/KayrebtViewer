@@ -4,8 +4,9 @@
 #include "graph.h"
 #include "element.h"
 
-const QPen Element::DEFAULT_PEN = QPen(QBrush(QColor("mediumaquamarine")), 1, Qt::SolidLine, Qt::SquareCap, Qt::RoundJoin);
-const QPen Element::HIGHLIGHT_PEN = QPen(QBrush(QColor("red")), 3, Qt::SolidLine, Qt::SquareCap, Qt::RoundJoin);
+QPen Element::defaultPen = QPen(QBrush(QColor("mediumaquamarine")), 1, Qt::SolidLine, Qt::SquareCap, Qt::RoundJoin);
+QBrush Element::defaultBrush = QBrush(QColor("mediumaquamarine"));
+QPen Element::highlightPen = QPen(QBrush(QColor("red")), 3, Qt::SolidLine, Qt::SquareCap, Qt::RoundJoin);
 
 Element::Element(Graph *graph, QGraphicsItem *parent) :
 	QGraphicsObject(parent),
@@ -30,20 +31,21 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void Element::highlight()
 {
-	_inner->setPen(HIGHLIGHT_PEN);
+	_inner->setPen(highlightPen);
 }
 
 void Element::unhighlight()
 {
-	_inner->setPen(DEFAULT_PEN);
+	_inner->setPen(defaultPen);
 }
 
-bool Element::isHighlighted()
+bool Element::isHighlighted() const
 {
-	return _inner->pen() == HIGHLIGHT_PEN;
+	return _inner->pen() == highlightPen;
 }
 
-bool Element::isUnhighlighted()
+bool Element::isUnhighlighted() const
 {
-	return _inner->pen() == DEFAULT_PEN;
+	return _inner->pen() == defaultPen;
 }
+

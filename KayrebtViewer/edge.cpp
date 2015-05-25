@@ -1,7 +1,10 @@
 #include <QFont>
 #include <QDebug>
 #include <QAbstractGraphicsShapeItem>
+#include <QGraphicsSimpleTextItem>
 #include <QGraphicsPathItem>
+#include <QGraphicsPolygonItem>
+#include <qmath.h>
 #include "edge.h"
 #include "graph.h"
 
@@ -19,9 +22,8 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 	// © Steve D. Lazaro, 07/2010
 	// Taken from http://www.mupuf.org/blog/2010/07/08/how_to_use_graphviz_to_draw_graphs_in_a_qt_graphics_scene/
 	//
-	//Calculate the path from the spline (only one spline, as the graph is strict. If it
-	//wasn't, we would have to iterate over the first list too)
-	//Calculate the path from the spline (only one as the graph is strict)
+	//Calculate the path from the spline (only one spline, as the graph is strict). If it
+	//waren't, we would have to iterate over the first list too.
 	if ((ED_spl(e)->list!=0) && (ED_spl(e)->list->size%3 == 1))
 	{
 		//If there is a starting point, draw a line from it to the first curve point
@@ -49,14 +51,36 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 		if(ED_spl(e)->list->eflag)
 			path.lineTo(ED_spl(e)->list->ep.x*scale,
 						 (GD_bb(g).UR.y - ED_spl(e)->list->ep.y)*scale);
+
+
+		// draw the arrow
+		QPointF cur(path.currentPosition());
+		qreal angleRad = (180.0f - path.angleAtPercent(1)) * 3.14159265358979 / 180.0f;
+
+		//debug
+		//QGraphicsSimpleTextItem* angleLabel = new QGraphicsSimpleTextItem(QString("%1").arg(angleRad),this);
+		//angleLabel->setPos(cur + QPointF(5, -20));
+
+		QVector<QPointF> pp;
+		pp << cur
+		   << cur + QPointF(15 * qCos(angleRad-0.3), 15 * qSin(angleRad-0.3))
+		   << cur + QPointF(15 * qCos(angleRad+0.3), 15 * qSin(angleRad+0.3))
+		   << cur;
+		path.addPolygon(QPolygonF(pp));
 	}
 	// -----END SHAMELESSLY COPY-PASTED CODE-----
+	QString label = agget(e,"label");
+	if (!label.isEmpty()) {
+		_label = new QGraphicsSimpleTextItem(label, this);
+		_label->setPos(path.pointAtPercent(0.5));
+		_label->setFont(Graph::MONOSPACE_FONT);
+	}
 
 	_inner = new QGraphicsPathItem(path,this);
-	_inner->setPen(DEFAULT_PEN);
+	_inner->setPen(defaultPen);
 }
 
-void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
 {
 	_graph->pimpSubTree(this,&Element::hide,&Edge::isVisible);
 }
@@ -65,4 +89,9 @@ void Edge::hide()
 {
 	agsafeset(_gv_edge,"style","invisible","invisible");
 	QGraphicsItem::hide();
+}
+
+bool Edge::hasHighlightedAncestor() const
+{
+	return _graph->hasHighlightedAncestor(this);
 }

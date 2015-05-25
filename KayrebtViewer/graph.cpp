@@ -65,19 +65,19 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 		for (Agedge_t* e = agfstout(_graph,currentNode) ; e ; e = agnxtout(_graph,e)) {
 			Agnode_t* nextNode = e->head;
 			bool toProcess = true;
-			if (test) {
+			if (test != nullptr) {
 				for (Agedge_t* in = agfstin(_graph,nextNode) ; in && toProcess ; in = agnxtin(_graph,in)) {
-					if (test(*_nodes[in->tail->id])) {
+					Node* tested = _nodes[in->tail->id];
+					if (test(*tested))
 						toProcess = false;
-					}
 				}
 			}
 			f(*_edges[e->id]);
-			if (toProcess && !waitingNodes.contains(nextNode) && !finishedNodes.contains(v)) {
+			if (toProcess && !waitingNodes.contains(nextNode) && !finishedNodes.contains(nextNode)) {
 				waitingNodes.enqueue(nextNode);
 			}
 		}
-		finishedNodes.append(v);
+		finishedNodes.append(currentNode);
 	}
 }
 
@@ -127,7 +127,7 @@ void Graph::addEdge(Agedge_t* e)
 	_edges[e->id] = edge;
 }
 
-bool Graph::hasHighlightedAncestor(Node* n)
+bool Graph::hasHighlightedAncestor(const Node* n)
 {
 	bool ancestorHighlighted = false;
 	for (Agedge_t* in = agfstin(_graph,n->_gv_node) ; in && !ancestorHighlighted ; in = agnxtin(_graph,in)) {
@@ -136,7 +136,7 @@ bool Graph::hasHighlightedAncestor(Node* n)
 	return ancestorHighlighted;
 }
 
-bool Graph::hasHighlightedAncestor(Edge* e)
+bool Graph::hasHighlightedAncestor(const Edge* e)
 {
 	return hasHighlightedAncestor(_nodes[e->_gv_edge->tail->id]);
 }

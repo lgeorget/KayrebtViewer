@@ -17,10 +17,8 @@ Node::Node(Agnode_t *v, Graph *graph, QGraphicsItem *parent) :
 //	qDebug() << "dpi : " << dpi << " " << scale;
 
 	_inner = draw();
-	_inner->setPen(DEFAULT_PEN);
-	setZValue(100);
-
-	qDebug() << "Adding node " << v->name << " at coords " << boundingRect() << " shape: " << agget(v,"shape");
+	_inner->setPen(defaultPen);
+	//qDebug() << "Adding node " << v->name << " at coords " << boundingRect() << " shape: " << agget(v,"shape");
 
 	setFlags(QGraphicsItem::ItemIsSelectable);
 	setAcceptHoverEvents(true);
@@ -61,7 +59,9 @@ QAbstractGraphicsShapeItem *Node::draw()
 										 ND_height(_gv_node)*dpi,
 										 this);
 	}
-	_label->setText(agget(_gv_node,"label"));
+	QString label(agget(_gv_node,"label"));
+	label.replace("\\n","\n");
+	_label->setText(label);
 	_label->setFont(_graph->MONOSPACE_FONT);
 	QRectF rectLabel(_label->boundingRect());
 	QRectF rectShape(res->boundingRect());
@@ -88,13 +88,22 @@ void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 	_graph->pimpSubTree(this, &Element::hide, &Node::isVisible,true);
 }
 
-void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
 	_graph->pimpSubTree(this,&Element::highlight);
 }
 
-void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
-	if (!isSelected() && !_graph->hasHighlightedAncestor(this))
-		_graph->pimpSubTree(this, &Element::unhighlight, &Element::isSelected);
+	if (!isSelected() && !hasHighlightedAncestor()) {
+		if (_graph->selectedItems() != QList<QGraphicsItem*>())
+			_graph->pimpSubTree(this, &Element::unhighlight, &Element::hasHighlightedAncestor);
+		else // no active selection
+			_graph->pimpSubTree(this, &Element::unhighlight);
+	}
+}
+
+bool Node::hasHighlightedAncestor() const
+{
+	return _graph->hasHighlightedAncestor(this);
 }
