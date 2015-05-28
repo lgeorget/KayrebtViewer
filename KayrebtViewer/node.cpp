@@ -4,6 +4,10 @@
 #include <QAbstractGraphicsShapeItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsEllipseItem>
+#include <QCursor>
+#include <QApplication>
+#include <QGraphicsSceneMouseEvent>
+#include <QWidget>
 #include <cstring>
 #include "node.h"
 #include "graph.h"
@@ -14,13 +18,16 @@ Node::Node(Agnode_t *v, Graph *graph, QGraphicsItem *parent) :
 	_gv_node(v),
 	_label(new QGraphicsSimpleTextItem(this))
 {
-//	qDebug() << "dpi : " << dpi << " " << scale;
-
 	_inner = draw();
 	_inner->setPen(defaultPen);
+
+	_url = agget(_gv_node,"URL");
+	if (!_url.isEmpty()) {
+		setCursor(QCursor(Qt::PointingHandCursor));
+	}
 	//qDebug() << "Adding node " << v->name << " at coords " << boundingRect() << " shape: " << agget(v,"shape");
 
-	setFlags(QGraphicsItem::ItemIsSelectable);
+	//setFlags(QGraphicsItem::ItemIsSelectable); //items cannot be selected now that they may carry URLs
 	setAcceptHoverEvents(true);
 }
 
@@ -86,6 +93,16 @@ void Node::hide()
 void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 {
 	_graph->pimpSubTree(this, &Element::hide, &Node::isVisible,true);
+}
+
+void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	qDebug() << "*** url: " << _url;
+	if (event->button() == Qt::LeftButton && !_url.isEmpty()) {
+		_graph->callOtherGraph(_url);
+	} else {
+		Element::mousePressEvent(event);
+	}
 }
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *)

@@ -22,15 +22,18 @@ public:
 	bool hasHighlightedAncestor() const;
 
 signals:
+	void hyperlinkActivated(const QString&);
 
 public slots:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *);
+	void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private:
 	Agnode_t* _gv_node;
 	QGraphicsSimpleTextItem* _label;
+	QString _url;
 
 	QAbstractGraphicsShapeItem* draw();
 

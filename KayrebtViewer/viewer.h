@@ -36,6 +36,9 @@ private:
   QString _srcTree;
   QString _symbDb;
   QString _diagdir;
+
+ protected:
+  virtual bool event(QEvent *event);
 };
 
 #endif // VIEWER_H

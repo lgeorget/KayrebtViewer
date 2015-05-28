@@ -3,18 +3,24 @@
 #include <QString>
 #include <exception>
 #include <QGraphicsPathItem>
+#include <QApplication>
+#include <QGraphicsView>
 #include <QPair>
 #include <QQueue>
 #include <QDebug>
+#include <QEvent>
+#include <QFileInfo>
+#include <QSettings>
 #include <types.h>
 #include "graph.h"
 #include "edge.h"
 #include "node.h"
+#include "hyperlinkactivatedevent.h"
 
 const qreal Graph::DOT_DEFAULT_DPI = 72.0;
 const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
 
-Graph::Graph(const QString& filename) : QGraphicsScene(), _gv_con(gvContext()), _graph()
+Graph::Graph(const QString& filename, QObject *parent) : QGraphicsScene(parent), _gv_con(gvContext()), _graph(), _filename(filename)
 {
 	std::FILE* fp = fopen(qPrintable(filename), "r");
 	if (fp == nullptr)
@@ -139,4 +145,28 @@ bool Graph::hasHighlightedAncestor(const Node* n)
 bool Graph::hasHighlightedAncestor(const Edge* e)
 {
 	return hasHighlightedAncestor(_nodes[e->_gv_edge->tail->id]);
+}
+
+void Graph::callOtherGraph(QString url) {
+	//Here, we have to tweak the URL
+	// Two cases: 1) the URL references a local (static) function, in this case, it will not have
+	//               a complete path
+	//            2) the URL references a global function, in this case, it will have a path relative
+	//               to the source tree
+
+	if (url.startsWith("./") && url.count("/") == 1) {
+		// Case 1)
+		url = QFileInfo(_filename).absolutePath() +	"/" + url + ".dot";
+	} else {
+		// Case 2)
+		QSettings settings;
+		url = settings.value("diagrams dir").toString() + url + ".dot";
+	}
+
+	HyperlinkActivatedEvent hyperlink(url);
+	//qDebug() << "new Hyperlink event " << &hyperlink;
+	QList<QWidget*> topLevels = qApp->topLevelWidgets();
+	for (int i=0 ; i<topLevels.size() ; i++)
+		if (topLevels[i]->isActiveWindow()) // send the event to the main window
+			qApp->sendEvent(topLevels[i], &hyperlink);
 }

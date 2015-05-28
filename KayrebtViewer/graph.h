@@ -19,7 +19,7 @@ class Graph : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	Graph(const QString& filename);
+	Graph(const QString& filename, QObject* parent = nullptr);
 	~Graph();
 	void pimpSubTree(Node *n, std::function<void (Element &)> f, std::function<bool (Element&)> test = nullptr, bool incomingEdgesAreConcerned =  false);
 	void pimpSubTree(Edge *e, std::function<void (Element &)> f, std::function<bool (Element&)> test = nullptr);
@@ -31,6 +31,7 @@ public:
 	qreal getDpi() const;
 	bool hasHighlightedAncestor(const Node* n);
 	bool hasHighlightedAncestor(const Edge* e);
+	void callOtherGraph(QString url);
 
 public slots:
 	void doLayout();
@@ -39,12 +40,13 @@ private:
 	void addNode(Agnode_t* v);
 	void addEdge(Agedge_t* v);
 	void setAttrs();
-
 	GVC_t* _gv_con;
 	Agraph_t* _graph;
 	qreal _dpi;
 	QMap<int,Node*> _nodes;
 	QMap<int,Edge*> _edges;
+	QString _filename;
+
 };
 
 #endif // GRAPH_H

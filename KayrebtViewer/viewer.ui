@@ -38,19 +38,7 @@
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
-   <widget class="QMenu" name="menuEditer">
-    <property name="title">
-     <string>Editer</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menu_2">
-    <property name="title">
-     <string>?</string>
-    </property>
-   </widget>
    <addaction name="menuFichier"/>
-   <addaction name="menuEditer"/>
-   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">

@@ -4,14 +4,15 @@
 #include <exception>
 #include <QWheelEvent>
 #include <QInputEvent>
+#include <QEvent>
 #include "graph.h"
 #include "drawing.h"
 
 
 Drawing::Drawing(QString inputFileName, QWidget *parent) :
-	QGraphicsView(parent),
-	_graph(new Graph(inputFileName))
+	QGraphicsView(parent)
 {
+	_graph = new Graph(inputFileName, this);
 	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 	setScene(_graph);
 	setDragMode(QGraphicsView::ScrollHandDrag);

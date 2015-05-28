@@ -69,7 +69,7 @@ void DatabaseViewer::symbolDoubleClicked(const QModelIndex& index)
 
 	QString graph = settings.value("diagrams dir").toString() +
 			_dbFilter->sibling(row, 1, index).data().toString() + "/" +
-			_dbFilter->sibling(row, 2, index).data().toString().remove(".c") + "/" +
+			_dbFilter->sibling(row, 2, index).data().toString() + "/" +
 			_dbFilter->sibling(row, 0, index).data().toString() + ".dot";
 	emit symbolSelected(graph);
 }

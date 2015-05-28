@@ -4,6 +4,7 @@
 #include "viewer.h"
 #include "drawing.h"
 #include "ui_viewer.h"
+#include "hyperlinkactivatedevent.h"
 
 Viewer::Viewer(QWidget *parent) :
 	QMainWindow(parent),
@@ -29,7 +30,7 @@ Viewer::Viewer(QWidget *parent) :
 	addDockWidget(Qt::LeftDockWidgetArea, _databaseDock);
 	_databaseDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 
-	_srcTreeWidget = new SourceTreeWidget();
+	_srcTreeWidget = new SourceTreeWidget(_sourcesDock);
 	_sourcesDock->setWidget(_srcTreeWidget);
 	_dbviewer = new DatabaseViewer();
 	_databaseDock->setWidget(_dbviewer);
@@ -67,7 +68,7 @@ void Viewer::openGraph(QString filename)
 
 			if (!found) {
 
-				subw = ui->docs->addSubWindow(new Drawing(filename));
+				subw = ui->docs->addSubWindow(new Drawing(filename, this));
 				subw->setWindowTitle(QFileInfo(filename).canonicalFilePath());
 			}
 
@@ -76,6 +77,17 @@ void Viewer::openGraph(QString filename)
 		} catch (std::runtime_error& e) {
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected is not a valid GraphViz file.\n\n") + e.what());
 		}
+	}
+}
+
+bool Viewer::event(QEvent *event)
+{
+	if (event->type() == HyperlinkActivatedEvent::HYPERLINK_ACTIVATED_EVENT) {
+		openGraph(static_cast<HyperlinkActivatedEvent*>(event)->getUrl());
+		event->accept();
+		return true;
+	} else {
+		return QMainWindow::event(event);
 	}
 }
 
