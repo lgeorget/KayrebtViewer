@@ -5,6 +5,7 @@
 #include <QWheelEvent>
 #include <QInputEvent>
 #include <QEvent>
+#include <QMenu>
 #include "graph.h"
 #include "drawing.h"
 
@@ -16,6 +17,9 @@ Drawing::Drawing(QString inputFileName, QWidget *parent) :
 	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 	setScene(_graph);
 	setDragMode(QGraphicsView::ScrollHandDrag);
+
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
 }
 
 void Drawing::wheelEvent(QWheelEvent *event)
@@ -36,4 +40,17 @@ void Drawing::wheelEvent(QWheelEvent *event)
 Drawing::~Drawing()
 {
 	delete _graph;
+}
+
+void Drawing::showContextMenu(const QPoint &point)
+{
+	QPoint globalPos = mapToGlobal(point);
+	QMenu contextualMenu;
+
+	QAction* resetAction = contextualMenu.addAction(tr("reset"));
+	QAction* act = contextualMenu.exec(globalPos);
+	if (act) {
+		if (act == resetAction)
+			_graph->reset();
+	}
 }

@@ -35,6 +35,7 @@ public:
 
 public slots:
 	void doLayout();
+	void reset();
 
 private:
 	void addNode(Agnode_t* v);

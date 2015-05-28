@@ -147,7 +147,8 @@ bool Graph::hasHighlightedAncestor(const Edge* e)
 	return hasHighlightedAncestor(_nodes[e->_gv_edge->tail->id]);
 }
 
-void Graph::callOtherGraph(QString url) {
+void Graph::callOtherGraph(QString url)
+{
 	//Here, we have to tweak the URL
 	// Two cases: 1) the URL references a local (static) function, in this case, it will not have
 	//               a complete path
@@ -170,3 +171,18 @@ void Graph::callOtherGraph(QString url) {
 		if (topLevels[i]->isActiveWindow()) // send the event to the main window
 			qApp->sendEvent(topLevels[i], &hyperlink);
 }
+
+void Graph::reset()
+{
+	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
+		agsafeset(v, "style", "normal", "normal");
+		_nodes[v->id]->setVisible(true);
+		_nodes[v->id]->unhighlight();
+		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e)) {
+			agsafeset(e, "style", "normal", "normal");
+			_edges[e->id]->setVisible(true);
+			_edges[e->id]->unhighlight();
+		}
+	}
+}
+

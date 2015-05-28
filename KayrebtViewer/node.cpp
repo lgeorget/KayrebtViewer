@@ -25,9 +25,7 @@ Node::Node(Agnode_t *v, Graph *graph, QGraphicsItem *parent) :
 	if (!_url.isEmpty()) {
 		setCursor(QCursor(Qt::PointingHandCursor));
 	}
-	//qDebug() << "Adding node " << v->name << " at coords " << boundingRect() << " shape: " << agget(v,"shape");
 
-	//setFlags(QGraphicsItem::ItemIsSelectable); //items cannot be selected now that they may carry URLs
 	setAcceptHoverEvents(true);
 }
 
@@ -100,8 +98,7 @@ void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	qDebug() << "*** url: " << _url;
-	if (event->button() == Qt::LeftButton && !_url.isEmpty()) {
+	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier && !_url.isEmpty()) {
 		_graph->callOtherGraph(_url);
 	} else {
 		Element::mousePressEvent(event);

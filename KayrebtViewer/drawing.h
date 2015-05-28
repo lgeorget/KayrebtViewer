@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include "graph.h"
+
+class Graph;
 
 class Drawing : public QGraphicsView
 {
@@ -14,11 +15,14 @@ public:
 	explicit Drawing(QString filename, QWidget *parent = 0);
 	~Drawing();
 
+public slots:
+	void showContextMenu(const QPoint& point);
+
 protected:
 	virtual void wheelEvent(QWheelEvent *event);
 
 private:
-	QGraphicsScene *_graph;
+	Graph *_graph;
 };
 
 #endif // DRAWING_H
