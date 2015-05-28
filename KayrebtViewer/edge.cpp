@@ -69,10 +69,10 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 		path.addPolygon(QPolygonF(pp));
 	}
 	// -----END SHAMELESSLY COPY-PASTED CODE-----
-	QString label = agget(e,"label");
-	if (!label.isEmpty()) {
-		_label = new QGraphicsSimpleTextItem(label, this);
-		_label->setPos(path.pointAtPercent(0.5));
+	if (ED_label(e)) {
+		_label = new QGraphicsSimpleTextItem(ED_label(e)->text, this);
+		QPointF labelPos(ED_label(e)->pos.x*scale - ED_label(e)->dimen.x*scale/2, (GD_bb(g).UR.y - ED_label(e)->pos.y)*scale);
+		_label->setPos(labelPos);
 		_label->setFont(Graph::MONOSPACE_FONT);
 	}
 

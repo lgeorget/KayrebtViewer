@@ -30,7 +30,7 @@ Graph::Graph(const QString& filename, QObject *parent) : QGraphicsScene(parent),
 	if (!_graph)
 		throw std::runtime_error("Couldn't parse graph from input file");
 
-	_dpi = QString(agget(_graph, const_cast<char *>("dpi"))).toDouble();
+	_dpi = QString(agget(_graph,"dpi")).toDouble(); // cannot access through GD_drawing(_graph)->_dpi as the layout isn't done yet
 	if (_dpi == 0)
 		_dpi = 96.0;
 

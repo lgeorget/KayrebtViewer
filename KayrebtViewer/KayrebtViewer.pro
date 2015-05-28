@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     edge.cpp \
     drawing.cpp \
     databasesortfilterproxymodel.cpp \
-    preferencesdialog.cpp
+    preferencesdialog.cpp \
+    hyperlinkactivatedevent.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -39,7 +40,8 @@ HEADERS  += \
     edge.h \
     drawing.h \
     databasesortfilterproxymodel.h \
-    preferencesdialog.h
+    preferencesdialog.h \
+    hyperlinkactivatedevent.h
 
 FORMS    += \
     viewer.ui \

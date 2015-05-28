@@ -37,7 +37,7 @@ QAbstractGraphicsShapeItem *Node::draw()
 	qreal scale = dpi/_graph->DOT_DEFAULT_DPI;
 	const Agraph_t* g = _graph->getAgraph();
 
-	QString shape = agget(_gv_node, "shape");
+	QString shape = ND_shape(_gv_node)->name;
 	QAbstractGraphicsShapeItem* res;
 	if (shape == "rect") {
 		res = new QGraphicsRectItem(ND_coord(_gv_node).x*scale - ND_width(_gv_node)*dpi/2,
@@ -59,23 +59,26 @@ QAbstractGraphicsShapeItem *Node::draw()
 		path.lineTo(right);
 		path.lineTo(top);
 		res = new QGraphicsPathItem(path, this);
-	} else {
+	} else { // by default: ellipse
 		res = new QGraphicsEllipseItem(ND_coord(_gv_node).x*scale - ND_width(_gv_node)*dpi/2,
 										 (GD_bb(g).UR.y - ND_coord(_gv_node).y)*scale - ND_height(_gv_node)*dpi/2,
 										 ND_width(_gv_node)*dpi,
 										 ND_height(_gv_node)*dpi,
 										 this);
 	}
-	QString label(agget(_gv_node,"label"));
-	label.replace("\\n","\n");
-	_label->setText(label);
-	_label->setFont(_graph->MONOSPACE_FONT);
-	QRectF rectLabel(_label->boundingRect());
-	QRectF rectShape(res->boundingRect());
-	qreal offset_w =  (rectShape.width() - rectLabel.width()) / 2;
-	qreal offset_h =  (rectShape.height() - rectLabel.height()) / 2;
-	_label->setPos(ND_coord(_gv_node).x*scale - ND_width(_gv_node)*dpi/2 + offset_w,
-				  (GD_bb(g).UR.y - ND_coord(_gv_node).y)*scale - ND_height(_gv_node)*dpi/2 + offset_h);
+
+	if (ND_label(_gv_node)) {
+		QString label(ND_label(_gv_node)->text);
+		label.replace("\\n","\n");
+		_label->setText(label);
+		_label->setFont(_graph->MONOSPACE_FONT);
+		QRectF rectLabel(_label->boundingRect());
+		QRectF rectShape(res->boundingRect());
+		qreal offset_w =  (rectShape.width() - rectLabel.width()) / 2;
+		qreal offset_h =  (rectShape.height() - rectLabel.height()) / 2;
+		_label->setPos(ND_coord(_gv_node).x*scale - ND_width(_gv_node)*dpi/2 + offset_w,
+					   (GD_bb(g).UR.y - ND_coord(_gv_node).y)*scale - ND_height(_gv_node)*dpi/2 + offset_h);
+	}
 	return res;
 }
 
