@@ -112,12 +112,7 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
-	if (!isSelected() && !hasHighlightedAncestor()) {
-		if (_graph->selectedItems() != QList<QGraphicsItem*>())
-			_graph->pimpSubTree(this, &Element::unhighlight, &Element::hasHighlightedAncestor);
-		else // no active selection
-			_graph->pimpSubTree(this, &Element::unhighlight);
-	}
+	_graph->pimpSubTree(this, &Element::unhighlight);
 }
 
 bool Node::hasHighlightedAncestor() const

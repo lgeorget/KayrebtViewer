@@ -91,7 +91,8 @@ void Graph::pimpSubTree(Edge *e, std::function<void (Element &)> f, std::functio
 {
 	f(*e);
 	Node *n = _nodes[e->_gv_edge->head->id];
-	pimpSubTree(n,f,test);
+	if (!test(*n))
+		pimpSubTree(n,f,test);
 }
 
 const Agraph_t *Graph::getAgraph() const
