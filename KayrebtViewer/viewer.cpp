@@ -48,28 +48,29 @@ void Viewer::openGraph()
 			  "GraphViz files (*.dot)"));
 }
 
-void Viewer::openGraph(QString filename)
+void Viewer::openGraph(const QString& filename)
 {
 	qDebug() << "About to open: " << filename;
 	if (!filename.isEmpty()) {
-		if (!QFile(filename).exists()) {
+		QFileInfo file(filename);
+		if (!file.exists()) {
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected does not exist."));
 			return;
 		}
 
+		QString newFileName(file.canonicalFilePath());
 		try {
 			bool found = false;
 			QMdiSubWindow* subw;
 			for (int i = 0 ; i < ui->docs->subWindowList().size() && !found ; ++i ) {
 				subw = ui->docs->subWindowList()[i];
-				if (subw->windowTitle() == filename)
+				if (subw->windowTitle() == newFileName)
 					found = true;
 			}
 
 			if (!found) {
-
-				subw = ui->docs->addSubWindow(new Drawing(filename, this));
-				subw->setWindowTitle(QFileInfo(filename).canonicalFilePath());
+				subw = ui->docs->addSubWindow(new Drawing(newFileName, this));
+				subw->setWindowTitle(newFileName);
 			}
 
 			ui->docs->setActiveSubWindow(subw);

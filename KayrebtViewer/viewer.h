@@ -22,7 +22,7 @@ public:
 
 public slots:
   void openGraph();
-  void openGraph(QString filename);
+  void openGraph(const QString &filename);
 
 private:
   Ui::Viewer *ui;
