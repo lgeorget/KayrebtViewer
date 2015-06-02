@@ -30,7 +30,7 @@ void Drawing::wheelEvent(QWheelEvent *event)
 		setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	}
 
-	qreal scaleFactor = 1.2;
+	const qreal scaleFactor = 1.2;
 	if (event->delta() > 0)
 		this->scale(scaleFactor, scaleFactor);
 	else

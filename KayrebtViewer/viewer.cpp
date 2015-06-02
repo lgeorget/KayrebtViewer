@@ -69,7 +69,9 @@ void Viewer::openGraph(const QString& filename)
 			}
 
 			if (!found) {
-				subw = ui->docs->addSubWindow(new Drawing(newFileName, this));
+				Drawing *d = new Drawing(newFileName, this);
+				d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
+				subw = ui->docs->addSubWindow(d);
 				subw->setWindowTitle(newFileName);
 			}
 
