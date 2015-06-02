@@ -31,7 +31,6 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 
 		_ui->dbView->verticalHeader()->hide();
 		_ui->dbView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		_ui->dbView->setSelectionBehavior(QAbstractItemView::SelectRows);
 		_ui->dbView->setSortingEnabled(true);
 		_ui->dbView->hideColumn(3); // hide line numbers
 
@@ -39,11 +38,10 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 		// Setup the history view
 		_openGraphs = new HistoryModel(_db, this);
 		_ui->historyView->setModel(_openGraphs);
-		_ui->historyView->verticalHeader()->hide();
 		_ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		_ui->historyView->setSelectionBehavior(QAbstractItemView::SelectRows);
-		_ui->historyView->setSortingEnabled(true);
+		_ui->historyView->setSortingEnabled(false);
 		_ui->historyView->hideColumn(3); // hide line numbers
+
 
 		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
 		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
