@@ -5,6 +5,7 @@
 #include "drawing.h"
 #include "ui_viewer.h"
 #include "hyperlinkactivatedevent.h"
+#include "graphitem.h"
 
 Viewer::Viewer(QWidget *parent) :
 	QMainWindow(parent),
@@ -37,10 +38,10 @@ Viewer::Viewer(QWidget *parent) :
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
-	connect(_dbviewer, SIGNAL(symbolSelected(QString)), this, SLOT(openGraph(QString)));
+	connect(_dbviewer, SIGNAL(graphSelected(QString)), this, SLOT(openGraph(QString)));
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
-	connect(this, SIGNAL(newGraphOpen(QFileInfo)), _dbviewer, SLOT(addGraphToHistory(QFileInfo)));
+	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
 }
 
 void Viewer::openGraph()
@@ -74,7 +75,7 @@ void Viewer::openGraph(const QString& filename)
 				d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
 				subw = ui->docs->addSubWindow(d);
 				subw->setWindowTitle(newFileName);
-				emit newGraphOpen(file);
+				emit newGraphOpen(GraphItem(file));
 			}
 
 			ui->docs->setActiveSubWindow(subw);

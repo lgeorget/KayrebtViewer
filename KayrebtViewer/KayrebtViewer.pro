@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     databasesortfilterproxymodel.cpp \
     preferencesdialog.cpp \
     hyperlinkactivatedevent.cpp \
-    historymodel.cpp
+    graphitem.cpp \
+    graphitemmodel.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -43,7 +44,8 @@ HEADERS  += \
     databasesortfilterproxymodel.h \
     preferencesdialog.h \
     hyperlinkactivatedevent.h \
-    historymodel.h
+    graphitem.h \
+    graphitemmodel.h
 
 FORMS    += \
     viewer.ui \

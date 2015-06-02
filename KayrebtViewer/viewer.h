@@ -12,6 +12,8 @@ namespace Ui {
   class Viewer;
 }
 
+class GraphItem;
+
 class Viewer : public QMainWindow
 {
   Q_OBJECT
@@ -25,7 +27,7 @@ public slots:
   void openGraph(const QString &filename);
 
 signals:
-  void newGraphOpen(const QFileInfo& file);
+  void newGraphOpen(const GraphItem& file);
 
 private:
   Ui::Viewer *ui;

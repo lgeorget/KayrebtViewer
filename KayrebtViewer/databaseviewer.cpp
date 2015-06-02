@@ -2,7 +2,8 @@
 #include <QSqlDatabase>
 #include "databasesortfilterproxymodel.h"
 #include "ui_databaseviewer.h"
-#include "historymodel.h"
+#include "graphitemmodel.h"
+#include "graphitem.h"
 
 DatabaseViewer::DatabaseViewer(QWidget *parent) :
 	QTabWidget(parent),
@@ -36,7 +37,7 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 
 
 		// Setup the history view
-		_openGraphs = new HistoryModel(_db, this);
+		_openGraphs = new GraphItemModel(this);
 		_ui->historyView->setModel(_openGraphs);
 		_ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_ui->historyView->setSortingEnabled(false);
@@ -78,7 +79,7 @@ void DatabaseViewer::symbolDoubleClicked(const QAbstractItemModel* model, const 
 			model->sibling(row, 1, index).data().toString() + "/" +
 			model->sibling(row, 2, index).data().toString() + "/" +
 			model->sibling(row, 0, index).data().toString() + ".dot";
-	emit symbolSelected(graph);
+	emit graphSelected(graph);
 }
 
 void DatabaseViewer::databaseSymbolDoubleClicked(const QModelIndex& index)
@@ -91,17 +92,6 @@ void DatabaseViewer::historySymbolDoubleClicked(const QModelIndex& index)
 	symbolDoubleClicked(_openGraphs, index);
 }
 
-void DatabaseViewer::addGraphToHistory(const QFileInfo& graph)
+void DatabaseViewer::addGraphToHistory(const GraphItem& graph)
 {
-	QSettings settings;
-
-	QString realPath(graph.canonicalFilePath());
-	QString prefixPath(settings.value("diagrams dir").toString());
-
-	QRegExp extractor(QRegExp::escape(prefixPath) + "(.*\\/)(.*\\.c)\\/(.*)\\.");
-	if (extractor.indexIn(realPath) == -1 || extractor.captureCount() != 3)
-		return;
-
-	QStringList captured = extractor.capturedTexts();
-	_openGraphs->appendRow({ captured[3], "./"+captured[1], captured[2] });
 }

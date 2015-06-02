@@ -11,49 +11,31 @@ namespace Ui {
   class DatabaseViewer;
 }
 
-class HistoryModel;
+class GraphItem;
+class GraphItemModel;
 
 class DatabaseViewer : public QTabWidget
 {
 	Q_OBJECT
 
 public:
-	struct RowContent {
-		QString symbol;
-		QString dir;
-		QString file;
-
-		QVariant get(int i) const {
-			switch (i) {
-				case 0:
-					return symbol;
-				case 1:
-					return dir;
-				case 2:
-					return file;
-				default:
-					return QVariant();
-			}
-		}
-	};
-
 	explicit DatabaseViewer(QWidget *parent = 0);
 	~DatabaseViewer();
 
 signals:
-	void symbolSelected(QString symbol);
+	void graphSelected(QString graph);
 	void fileSelected(QString symbol);
 
 public slots:
 	void selectFileAndDirectory(QString dir, QString file);
-	void addGraphToHistory(const QFileInfo& graph);
+	void addGraphToHistory(const GraphItem &graph);
 
 private:
 	Ui::DatabaseViewer *_ui;
 	QSqlTableModel* _db;
 	QSqlDatabase _dbBackend;
 	DatabaseSortFilterProxyModel* _dbFilter;
-	HistoryModel* _openGraphs;
+	GraphItemModel* _openGraphs;
 	void symbolDoubleClicked(const QAbstractItemModel *model, const QModelIndex& index);
 
 private slots:

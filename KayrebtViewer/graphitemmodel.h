@@ -6,13 +6,11 @@
 #include <QVariant>
 #include "databaseviewer.h"
 
-class HistoryModel : public QAbstractTableModel
+class GraphItemModel : public QAbstractTableModel
 {
-private:
-	using RowContent = DatabaseViewer::RowContent;
-
 public:
-	explicit HistoryModel(QAbstractTableModel* sourceDb, QObject *parent = 0);
+	explicit GraphItemModel(QObject *parent = 0);
+	~GraphItemModel();
 
 	int rowCount(const QModelIndex & parent = QModelIndex()) const;
 	int columnCount(const QModelIndex & parent = QModelIndex()) const;
@@ -20,12 +18,9 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 public slots:
-	bool appendRow(const RowContent& newRow, const QModelIndex& parent = QModelIndex());
-	bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
 
 private:
-	QAbstractTableModel* _sourceDb;
-	QList<DatabaseViewer::RowContent> _sourceRows;
+	GraphItem* _rootItem;
 
 };
 

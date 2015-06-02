@@ -120,6 +120,11 @@ void Graph::doLayout()
 				  GD_bb(_graph).UR.x*(_dpi/DOT_DEFAULT_DPI), GD_bb(_graph).UR.y*(_dpi/DOT_DEFAULT_DPI));
 }
 
+QString Graph::getFilename() const
+{
+	return _filename;
+}
+
 void Graph::addNode(Agnode_t* v)
 {
 	Node* node = new Node(v,this);

@@ -33,6 +33,8 @@ public:
 	bool hasHighlightedAncestor(const Edge* e);
 	void callOtherGraph(QString url);
 
+	QString getFilename() const;
+
 public slots:
 	void doLayout();
 	void reset();
