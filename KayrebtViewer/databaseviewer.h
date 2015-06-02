@@ -7,10 +7,36 @@
 #include <QSqlDatabase>
 #include "databasesortfilterproxymodel.h"
 
-class DatabaseViewer : public QWidget
+namespace Ui {
+  class DatabaseViewer;
+}
+
+class HistoryModel;
+
+class DatabaseViewer : public QTabWidget
 {
 	Q_OBJECT
+
 public:
+	struct RowContent {
+		QString symbol;
+		QString dir;
+		QString file;
+
+		QVariant get(int i) const {
+			switch (i) {
+				case 0:
+					return symbol;
+				case 1:
+					return dir;
+				case 2:
+					return file;
+				default:
+					return QVariant();
+			}
+		}
+	};
+
 	explicit DatabaseViewer(QWidget *parent = 0);
 	~DatabaseViewer();
 
@@ -20,16 +46,14 @@ signals:
 
 public slots:
 	void selectFileAndDirectory(QString dir, QString file);
+	void addGraphToHistory(const QFileInfo& graph);
 
 private:
-	QTableView* _dbView;
+	Ui::DatabaseViewer *_ui;
 	QSqlTableModel* _db;
 	QSqlDatabase _dbBackend;
 	DatabaseSortFilterProxyModel* _dbFilter;
-
-	QLineEdit* _filterName;
-	QLineEdit* _filterDir;
-	QLineEdit* _filterFile;
+	HistoryModel* _openGraphs;
 
 private slots:
 	void symbolDoubleClicked(const QModelIndex& index);

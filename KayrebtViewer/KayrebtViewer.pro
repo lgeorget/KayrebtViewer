@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     drawing.cpp \
     databasesortfilterproxymodel.cpp \
     preferencesdialog.cpp \
-    hyperlinkactivatedevent.cpp
+    hyperlinkactivatedevent.cpp \
+    historymodel.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -41,10 +42,12 @@ HEADERS  += \
     drawing.h \
     databasesortfilterproxymodel.h \
     preferencesdialog.h \
-    hyperlinkactivatedevent.h
+    hyperlinkactivatedevent.h \
+    historymodel.h
 
 FORMS    += \
     viewer.ui \
-    preferencesdialog.ui
+    preferencesdialog.ui \
+    databaseviewer.ui
 
 OTHER_FILES +=

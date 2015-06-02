@@ -32,7 +32,7 @@ Viewer::Viewer(QWidget *parent) :
 
 	_srcTreeWidget = new SourceTreeWidget(_sourcesDock);
 	_sourcesDock->setWidget(_srcTreeWidget);
-	_dbviewer = new DatabaseViewer();
+	_dbviewer = new DatabaseViewer(_databaseDock);
 	_databaseDock->setWidget(_dbviewer);
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -40,6 +40,7 @@ Viewer::Viewer(QWidget *parent) :
 	connect(_dbviewer, SIGNAL(symbolSelected(QString)), this, SLOT(openGraph(QString)));
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
+	connect(this, SIGNAL(newGraphOpen(QFileInfo)), _dbviewer, SLOT(addGraphToHistory(QFileInfo)));
 }
 
 void Viewer::openGraph()
@@ -73,6 +74,7 @@ void Viewer::openGraph(const QString& filename)
 				d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
 				subw = ui->docs->addSubWindow(d);
 				subw->setWindowTitle(newFileName);
+				emit newGraphOpen(file);
 			}
 
 			ui->docs->setActiveSubWindow(subw);

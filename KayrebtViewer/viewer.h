@@ -24,6 +24,9 @@ public slots:
   void openGraph();
   void openGraph(const QString &filename);
 
+signals:
+  void newGraphOpen(const QFileInfo& file);
+
 private:
   Ui::Viewer *ui;
   QDockWidget* _configDock;
