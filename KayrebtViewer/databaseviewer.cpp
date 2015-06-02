@@ -32,7 +32,12 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 		_db->select();
 
 		_dbFilter->setSourceModel(_db);
+		while (_db->canFetchMore()) { // this may be wrong, TODO: find a way to use
+			_db->fetchMore();         // the filtering proxy with incremental data
+		}
 		_dbView->setModel(_dbFilter);
+
+		_dbView->verticalHeader()->hide();
 		_dbView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_dbView->setSelectionBehavior(QAbstractItemView::SelectRows);
 		_dbView->setSortingEnabled(true);
