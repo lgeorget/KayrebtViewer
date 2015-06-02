@@ -49,7 +49,8 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
 		connect(_ui->fileFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setFileFilterRegExp(QString)));
 	}
-	connect(_ui->dbView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(symbolDoubleClicked(QModelIndex)));
+	connect(_ui->dbView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(databaseSymbolDoubleClicked(QModelIndex)));
+	connect(_ui->historyView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(historySymbolDoubleClicked(QModelIndex)));
 }
 
 DatabaseViewer::~DatabaseViewer()
@@ -66,20 +67,30 @@ void DatabaseViewer::selectFileAndDirectory(QString dir, QString file)
 }
 
 
-void DatabaseViewer::symbolDoubleClicked(const QModelIndex& index)
+void DatabaseViewer::symbolDoubleClicked(const QAbstractItemModel* model, const QModelIndex& index)
 {
 	QSettings settings;
 	int row = index.row();
 	QString file = settings.value("source tree").toString() +
-			_dbFilter->sibling(row, 1, index).data().toString() + "/" +
-			_dbFilter->sibling(row, 2, index).data().toString();
+			model->sibling(row, 1, index).data().toString() + "/" +
+			model->sibling(row, 2, index).data().toString();
 	emit fileSelected(file);
 
 	QString graph = settings.value("diagrams dir").toString() +
-			_dbFilter->sibling(row, 1, index).data().toString() + "/" +
-			_dbFilter->sibling(row, 2, index).data().toString() + "/" +
-			_dbFilter->sibling(row, 0, index).data().toString() + ".dot";
+			model->sibling(row, 1, index).data().toString() + "/" +
+			model->sibling(row, 2, index).data().toString() + "/" +
+			model->sibling(row, 0, index).data().toString() + ".dot";
 	emit symbolSelected(graph);
+}
+
+void DatabaseViewer::databaseSymbolDoubleClicked(const QModelIndex& index)
+{
+	symbolDoubleClicked(_dbFilter, index);
+}
+
+void DatabaseViewer::historySymbolDoubleClicked(const QModelIndex& index)
+{
+	symbolDoubleClicked(_openGraphs, index);
 }
 
 void DatabaseViewer::addGraphToHistory(const QFileInfo& graph)
@@ -94,5 +105,5 @@ void DatabaseViewer::addGraphToHistory(const QFileInfo& graph)
 		return;
 
 	QStringList captured = extractor.capturedTexts();
-	_openGraphs->appendRow({ captured[3], "."+captured[1], captured[2] });
+	_openGraphs->appendRow({ captured[3], "./"+captured[1], captured[2] });
 }

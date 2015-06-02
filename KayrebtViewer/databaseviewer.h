@@ -54,9 +54,11 @@ private:
 	QSqlDatabase _dbBackend;
 	DatabaseSortFilterProxyModel* _dbFilter;
 	HistoryModel* _openGraphs;
+	void symbolDoubleClicked(const QAbstractItemModel *model, const QModelIndex& index);
 
 private slots:
-	void symbolDoubleClicked(const QModelIndex& index);
+	void databaseSymbolDoubleClicked(const QModelIndex& index);
+	void historySymbolDoubleClicked(const QModelIndex& index);
 };
 
 #endif // DATABASEVIEWER_H
