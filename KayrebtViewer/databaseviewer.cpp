@@ -5,7 +5,7 @@
 #include "graphitemmodel.h"
 #include "graphitem.h"
 
-DatabaseViewer::DatabaseViewer(QWidget *parent) :
+DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 	QTabWidget(parent),
 	_ui(new Ui::DatabaseViewer)
 {
@@ -37,7 +37,7 @@ DatabaseViewer::DatabaseViewer(QWidget *parent) :
 
 
 		// Setup the history view
-		_openGraphs = new GraphItemModel(this);
+		_openGraphs = history;
 		_ui->historyView->setModel(_openGraphs);
 		_ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_ui->historyView->setSortingEnabled(false);
@@ -94,4 +94,5 @@ void DatabaseViewer::historySymbolDoubleClicked(const QModelIndex& index)
 
 void DatabaseViewer::addGraphToHistory(const GraphItem& graph)
 {
+	_openGraphs->appendGraphItem(graph);
 }

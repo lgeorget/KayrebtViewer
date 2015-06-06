@@ -19,7 +19,7 @@ class Graph : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	Graph(const QString& filename, QObject* parent = nullptr);
+	Graph(quint64 id, const QString& filename, QObject* parent = nullptr);
 	~Graph();
 	void pimpSubTree(Node *n, std::function<void (Element &)> f, std::function<bool (Element&)> test = nullptr, bool incomingEdgesAreConcerned =  false);
 	void pimpSubTree(Edge *e, std::function<void (Element &)> f, std::function<bool (Element&)> test = nullptr);
@@ -43,6 +43,7 @@ private:
 	void addNode(Agnode_t* v);
 	void addEdge(Agedge_t* v);
 	void setAttrs();
+	quint64 _id = 0;
 	GVC_t* _gv_con;
 	Agraph_t* _graph;
 	qreal _dpi;

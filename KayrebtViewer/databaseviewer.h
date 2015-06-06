@@ -19,7 +19,7 @@ class DatabaseViewer : public QTabWidget
 	Q_OBJECT
 
 public:
-	explicit DatabaseViewer(QWidget *parent = 0);
+	explicit DatabaseViewer(GraphItemModel* history, QWidget *parent = 0);
 	~DatabaseViewer();
 
 signals:

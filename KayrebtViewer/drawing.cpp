@@ -10,10 +10,10 @@
 #include "drawing.h"
 
 
-Drawing::Drawing(QString inputFileName, QWidget *parent) :
+Drawing::Drawing(quint64 id, QString inputFileName, QWidget *parent) :
 	QGraphicsView(parent)
 {
-	_graph = new Graph(inputFileName, this);
+	_graph = new Graph(id, inputFileName, this);
 	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 	setScene(_graph);
 	setDragMode(QGraphicsView::ScrollHandDrag);

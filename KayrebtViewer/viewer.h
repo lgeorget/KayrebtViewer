@@ -7,6 +7,7 @@
 #include "graph.h"
 #include "sourcetreewidget.h"
 #include "databaseviewer.h"
+#include "graphitemmodel.h"
 
 namespace Ui {
   class Viewer;
@@ -41,6 +42,11 @@ private:
   QString _srcTree;
   QString _symbDb;
   QString _diagdir;
+  GraphItemModel _openGraphs;
+
+  static quint64 _graphsIdGenerator;
+
+  quint64 doOpenGraph(const QFileInfo &file);
 
  protected:
   virtual bool event(QEvent *event);

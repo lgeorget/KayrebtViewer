@@ -6,6 +6,10 @@
 #include "ui_viewer.h"
 #include "hyperlinkactivatedevent.h"
 #include "graphitem.h"
+#include "graphitemmodel.h"
+
+
+quint64 Viewer::_graphsIdGenerator = 1;
 
 Viewer::Viewer(QWidget *parent) :
 	QMainWindow(parent),
@@ -18,11 +22,6 @@ Viewer::Viewer(QWidget *parent) :
 	_symbDb = settings.value("symbol database").toString();
 	_diagdir = settings.value("diagrams dir").toString();
 
-	// TODO
-/*	_configDock = new QDockWidget(this);
-	addDockWidget(Qt::RightDockWidgetArea, _configDock);
-	_configDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-*/
 	_sourcesDock = new QDockWidget(this);
 	addDockWidget(Qt::RightDockWidgetArea, _sourcesDock);
 	_sourcesDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
@@ -33,7 +32,7 @@ Viewer::Viewer(QWidget *parent) :
 
 	_srcTreeWidget = new SourceTreeWidget(_sourcesDock);
 	_sourcesDock->setWidget(_srcTreeWidget);
-	_dbviewer = new DatabaseViewer(_databaseDock);
+	_dbviewer = new DatabaseViewer(&_openGraphs, _databaseDock);
 	_databaseDock->setWidget(_dbviewer);
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -41,7 +40,7 @@ Viewer::Viewer(QWidget *parent) :
 	connect(_dbviewer, SIGNAL(graphSelected(QString)), this, SLOT(openGraph(QString)));
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
-	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
+//	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
 }
 
 void Viewer::openGraph()
@@ -59,37 +58,61 @@ void Viewer::openGraph(const QString& filename)
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected does not exist."));
 			return;
 		}
-
-		QString newFileName(file.canonicalFilePath());
 		try {
-			bool found = false;
-			QMdiSubWindow* subw;
-			for (int i = 0 ; i < ui->docs->subWindowList().size() && !found ; ++i ) {
-				subw = ui->docs->subWindowList()[i];
-				if (subw->windowTitle() == newFileName)
-					found = true;
-			}
-
-			if (!found) {
-				Drawing *d = new Drawing(newFileName, this);
-				d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
-				subw = ui->docs->addSubWindow(d);
-				subw->setWindowTitle(newFileName);
-				emit newGraphOpen(GraphItem(file));
-			}
-
-			ui->docs->setActiveSubWindow(subw);
-			subw->show();
+			quint64 id = doOpenGraph(file);
+			if (id > 0)
+				_openGraphs.appendGraphItem(GraphItem(file, id)); // new root in history
 		} catch (std::runtime_error& e) {
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The file you have selected is not a valid GraphViz file.\n\n") + e.what());
 		}
 	}
 }
 
+
+quint64 Viewer::doOpenGraph(const QFileInfo& file)
+{
+	QString newFileName(file.canonicalFilePath());
+	quint64 id = 0;
+
+	bool found = false;
+	QMdiSubWindow* subw;
+	for (int i = 0 ; i < ui->docs->subWindowList().size() && !found ; ++i ) {
+		subw = ui->docs->subWindowList()[i];
+		if (subw->windowTitle() == newFileName) {
+			found = true;
+		}
+	}
+
+	if (!found) {
+		id = _graphsIdGenerator++;
+		Drawing *d = new Drawing(id, newFileName, this);
+		d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
+		subw = ui->docs->addSubWindow(d);
+		subw->setWindowTitle(newFileName);
+	}
+
+	ui->docs->setActiveSubWindow(subw);
+	subw->show();
+
+	return id;
+}
+
 bool Viewer::event(QEvent *event)
 {
 	if (event->type() == HyperlinkActivatedEvent::HYPERLINK_ACTIVATED_EVENT) {
-		openGraph(static_cast<HyperlinkActivatedEvent*>(event)->getUrl());
+		HyperlinkActivatedEvent* realEvent = static_cast<HyperlinkActivatedEvent*>(event);
+		QFileInfo file(realEvent->getUrl());
+		if (!file.exists()) {
+			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The diagram you want does not exist.\n"
+																  "Perhaps it is an inlining symbol?\n"));
+		} else {
+			quint64 id = doOpenGraph(file);
+			if (id > 0) {
+				QModelIndex index = _openGraphs.findGraphItem(realEvent->getId());
+				_openGraphs.appendGraphItem(GraphItem(file, id), index);
+			}
+		}
+
 		event->accept();
 		return true;
 	} else {

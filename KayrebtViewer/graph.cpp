@@ -20,7 +20,7 @@
 const qreal Graph::DOT_DEFAULT_DPI = 72.0;
 const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
 
-Graph::Graph(const QString& filename, QObject *parent) : QGraphicsScene(parent), _gv_con(gvContext()), _graph(), _filename(filename)
+Graph::Graph(quint64 id, const QString& filename, QObject *parent) : QGraphicsScene(parent), _id(id), _gv_con(gvContext()), _graph(), _filename(filename)
 {
 	std::FILE* fp = fopen(qPrintable(filename), "r");
 	if (fp == nullptr)
@@ -170,7 +170,7 @@ void Graph::callOtherGraph(QString url)
 		url = settings.value("diagrams dir").toString() + url + ".dot";
 	}
 
-	HyperlinkActivatedEvent hyperlink(url);
+	HyperlinkActivatedEvent hyperlink(_id, url);
 	//qDebug() << "new Hyperlink event " << &hyperlink;
 	QList<QWidget*> topLevels = qApp->topLevelWidgets();
 	for (int i=0 ; i<topLevels.size() ; i++)

@@ -12,7 +12,7 @@ class Drawing : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit Drawing(QString filename, QWidget *parent = 0);
+	explicit Drawing(quint64 id, QString filename, QWidget *parent = 0);
 	~Drawing();
 
 public slots:
