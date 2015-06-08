@@ -29,6 +29,7 @@ signals:
 public slots:
 	void selectFileAndDirectory(QString dir, QString file);
 	void addGraphToHistory(const GraphItem &graph);
+	void showHistoryContextMenu(const QPoint& point);
 
 private:
 	Ui::DatabaseViewer *_ui;

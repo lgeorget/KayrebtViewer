@@ -1,9 +1,10 @@
-#include "databaseviewer.h"
+#include <QtGui>
 #include <QSqlDatabase>
 #include "databasesortfilterproxymodel.h"
 #include "ui_databaseviewer.h"
 #include "graphitemmodel.h"
 #include "graphitem.h"
+#include "databaseviewer.h"
 
 DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 	QTabWidget(parent),
@@ -42,7 +43,7 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 		_ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_ui->historyView->setSortingEnabled(false);
 		_ui->historyView->hideColumn(3); // hide line numbers
-
+		_ui->historyView->setContextMenuPolicy(Qt::CustomContextMenu);
 
 		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
 		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
@@ -50,6 +51,7 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 	}
 	connect(_ui->dbView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(databaseSymbolDoubleClicked(QModelIndex)));
 	connect(_ui->historyView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(historySymbolDoubleClicked(QModelIndex)));
+	connect(_ui->historyView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showHistoryContextMenu(QPoint)));
 }
 
 DatabaseViewer::~DatabaseViewer()
@@ -95,4 +97,20 @@ void DatabaseViewer::historySymbolDoubleClicked(const QModelIndex& index)
 void DatabaseViewer::addGraphToHistory(const GraphItem& graph)
 {
 	_openGraphs->appendGraphItem(graph);
+}
+
+void DatabaseViewer::showHistoryContextMenu(const QPoint& point)
+{
+	QModelIndex index = _ui->historyView->indexAt(point);
+	if (!index.isValid())
+		return;
+
+	QMenu contextMenu;
+	QAction removeGraph(tr("Delete"), this);
+	contextMenu.addAction(&removeGraph);
+
+	QAction* chosen = contextMenu.exec(_ui->historyView->mapToGlobal(point));
+	if (chosen == &removeGraph) {
+		_openGraphs->removeRow(index.row(), index.parent());
+	}
 }

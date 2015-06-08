@@ -147,6 +147,9 @@ bool GraphItem::removeChild(int i)
 	if (i >= _children.count() || i < 0)
 		return false;
 
+	GraphItem* it = _children.at(i);
 	_children.removeAt(i);
+	delete it;
+
 	return true;
 }

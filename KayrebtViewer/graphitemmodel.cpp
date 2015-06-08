@@ -65,8 +65,10 @@ bool GraphItemModel::removeRows(int row, int count, const QModelIndex & parent)
 	if (parentItem->childrenCount() < row + count - 1)
 		return false; //not enough elements present in the model
 
+	beginRemoveRows(parent, row, row + count - 1);
 	for (int i = row ; i < row + count ; i++)
 		parentItem->removeChild(i);
+	endRemoveRows();
 
 	return true;
 }
