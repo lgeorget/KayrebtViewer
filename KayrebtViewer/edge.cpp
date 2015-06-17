@@ -1,3 +1,9 @@
+/**
+ * @file edge.cpp
+ * @author Laurent Georget
+ * @date 2015-06-07
+ * @brief Implementation of class Edge
+ */
 #include <QFont>
 #include <QDebug>
 #include <QAbstractGraphicsShapeItem>
@@ -19,8 +25,10 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 	QPainterPath path;
 
 	// -----BEGIN SHAMELESSLY COPY-PASTED CODE-----
-	// © Steve D. Lazaro, 07/2010
-	// Taken from http://www.mupuf.org/blog/2010/07/08/how_to_use_graphviz_to_draw_graphs_in_a_qt_graphics_scene/
+	// Inspired by code from
+	//     http://www.mupuf.org/blog/2010/07/08/
+	//           how_to_use_graphviz_to_draw_graphs_in_a_qt_graphics_scene/
+	//    © Steve D. Lazaro, 07/2010
 	//
 	//Calculate the path from the spline (only one spline, as the graph is strict). If it
 	//waren't, we would have to iterate over the first list too.
