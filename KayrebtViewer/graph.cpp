@@ -1,3 +1,9 @@
+/**
+ * @file graph.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class Graph
+ */
 #include <cstdio>
 #include <cstring>
 #include <QString>
