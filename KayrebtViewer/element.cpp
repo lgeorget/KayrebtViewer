@@ -1,3 +1,9 @@
+/**
+ * @file element.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class Element
+ */
 #include <QPen>
 #include <QBrush>
 #include <QRectF>
