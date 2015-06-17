@@ -1,3 +1,9 @@
+/**
+ * @file hyperlinkactivatedevent.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Definition of class HyperlinkActivatedEvent
+ */
 #include "hyperlinkactivatedevent.h"
 
 const QEvent::Type HyperlinkActivatedEvent::HYPERLINK_ACTIVATED_EVENT = static_cast<QEvent::Type>(QEvent::registerEventType(QEvent::User));
