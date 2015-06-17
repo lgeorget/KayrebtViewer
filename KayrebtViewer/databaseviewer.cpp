@@ -1,3 +1,8 @@
+/**
+ * @file databaseviewer.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ */
 #include <QtGui>
 #include <QSqlDatabase>
 #include "databasesortfilterproxymodel.h"
