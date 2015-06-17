@@ -1,3 +1,9 @@
+/**
+ * @file graphitemmodel.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class GraphItemModel
+ */
 #include <QtGui>
 #include <tuple>
 #include <limits>

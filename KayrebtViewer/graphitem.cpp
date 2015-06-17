@@ -1,3 +1,9 @@
+/**
+ * @file graphitem.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class GraphItem
+ */
 #include "graphitem.h"
 #include <QSettings>
 #include <QRegExp>
