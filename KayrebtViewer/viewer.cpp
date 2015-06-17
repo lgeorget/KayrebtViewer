@@ -1,3 +1,9 @@
+/**
+ * @file viewer.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Definition of class Viewer
+ */
 #include <QString>
 #include <QFileDialog>
 #include <QGraphicsView>
