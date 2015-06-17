@@ -1,3 +1,9 @@
+/**
+ * @file preferencesdialog.cpp
+ * @author Laurent Georget
+ * @data 2015-06-07
+ * @brief Definition of class PreferencesDialog
+ */
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
 #include <QSettings>
