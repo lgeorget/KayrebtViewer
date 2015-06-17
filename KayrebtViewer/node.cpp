@@ -1,3 +1,9 @@
+/**
+ * @file node.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation for class Node
+ */
 #include <functional>
 #include <QFont>
 #include <QDebug>
