@@ -1,3 +1,9 @@
+/**
+ * @file sourcetreewidget.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class SourceTreeWidget
+ */
 #include "sourcetreewidget.h"
 #include <QtGui>
 
