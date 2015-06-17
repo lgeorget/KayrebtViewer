@@ -36,22 +36,24 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 		_ui->dbView->setSortingEnabled(true);
 		_ui->dbView->hideColumn(3); // hide line numbers
 
+		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
+		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
+		connect(_ui->fileFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setFileFilterRegExp(QString)));
+		connect(_ui->dbView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(databaseSymbolDoubleClicked(QModelIndex)));
+	}
 
-		// Setup the history view
-		_openGraphs = history;
+	// Setup the history view
+	_openGraphs = history;
+	if (_openGraphs) {
 		_ui->historyView->setModel(_openGraphs);
 		_ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_ui->historyView->setSortingEnabled(false);
 		_ui->historyView->hideColumn(3); // hide line numbers
 		_ui->historyView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
-		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
-		connect(_ui->fileFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setFileFilterRegExp(QString)));
+		connect(_ui->historyView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(historySymbolDoubleClicked(QModelIndex)));
+		connect(_ui->historyView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showHistoryContextMenu(QPoint)));
 	}
-	connect(_ui->dbView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(databaseSymbolDoubleClicked(QModelIndex)));
-	connect(_ui->historyView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(historySymbolDoubleClicked(QModelIndex)));
-	connect(_ui->historyView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showHistoryContextMenu(QPoint)));
 }
 
 DatabaseViewer::~DatabaseViewer()
