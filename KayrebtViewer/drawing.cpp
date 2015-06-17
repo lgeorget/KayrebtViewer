@@ -1,3 +1,9 @@
+/**
+ * @file drawing.cpp
+ * @author Laurent Georget
+ * @date 2015-06-17
+ * @brief Implementation of class Drawing
+ */
 #include <QProcess>
 #include <QDebug>
 #include <QtAlgorithms>
