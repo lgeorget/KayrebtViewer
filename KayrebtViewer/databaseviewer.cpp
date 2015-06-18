@@ -2,6 +2,7 @@
  * @file databaseviewer.cpp
  * @author Laurent Georget
  * @date 2015-06-17
+ * @brief Implementation of class DatabaseViewer
  */
 #include <QtGui>
 #include <QSqlDatabase>

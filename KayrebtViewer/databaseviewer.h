@@ -2,6 +2,7 @@
  * @file databaseviewer.h
  * @author Laurent Georget
  * @date 2015-06-17
+ * @brief Definition of class DatabaseViewer
  */
 #ifndef DATABASEVIEWER_H
 #define DATABASEVIEWER_H

@@ -1,5 +1,5 @@
 /**
- * @file databasesortfilterproxymodel.h
+ * @file databasesortfilterproxymodel.cpp
  * @author Laurent Georget
  * @date 2015-06-08
  * @brief Implementation of class DatabaseSortFilterProxyModel
