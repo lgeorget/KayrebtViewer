@@ -1,7 +1,7 @@
 /**
  * @file preferencesdialog.h
  * @author Laurent Georget
- * @data 2015-06-07
+ * @date 2015-06-07
  * @brief Definition of class PreferencesDialog
  */
 #ifndef PREFERENCESDIALOG_H
@@ -16,9 +16,6 @@ namespace Ui {
 	/**
 	 * @brief This class is the graphical user interface class generated
 	 * by QtDesigner
-	 */
-	/**
-	 * @brief 
 	 */
 	class PreferencesDialog;
 }

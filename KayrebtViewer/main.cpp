@@ -1,5 +1,5 @@
 /**
- * @brief main.cpp
+ * @file main.cpp
  * @author Laurent Georget
  * @date 2015-06-17
  * @brief Contains the entry point main()
@@ -10,15 +10,16 @@
 
 
 /**
- * \brief Starts the program.
+ * @fn main
+ * @brief Starts the program.
  *
  * This function first displays the preferences dialog, and once the settings
  * are accepted, it shows the main window.
  *
- * \param argc number of arguments, passed to QApplication's constructor
- * \param argv[] the arguments, passed to QApplication's constructor
+ * @param argc number of arguments, passed to QApplication's constructor
+ * @param argv[] the arguments, passed to QApplication's constructor
  *
- * \return the result of QApplication::exec(), i.e. 0 if everything went well,
+ * @return the result of QApplication::exec(), i.e. 0 if everything went well,
  * otherwise an error code
  */
 int main(int argc, char *argv[])

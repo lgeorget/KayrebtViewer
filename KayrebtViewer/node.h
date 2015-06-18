@@ -66,9 +66,9 @@ public slots:
 	 *
 	 * This slot is triggered when the user double-clicks on the Node.
 	 *
-	 * @param UNUSED
+	 * @param UNUSED <i>unused</i>
 	 */
-	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * UNUSED);
 	/**
 	 * @brief Highlights the Node and all the elements of the diagram
 	 * reachable from it.
@@ -76,26 +76,26 @@ public slots:
 	 * This slot is triggered when the user hovers the node with its mouse
 	 * pointer.
 	 *
-	 * @param UNUSED
+	 * @param UNUSED <i>unused</i>
 	 */
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *);
+	void hoverEnterEvent(QGraphicsSceneHoverEvent * UNUSED);
 	/**
 	 * @brief Reverses the effect of hoverEnterEvent().
 	 *
 	 * This slot is triggered when the mouse pointer leaves the Node.
 	 *
-	 * @param UNUSED
+	 * @param UNUSED <i>unused</i>
 	 */
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *);
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent * UNUSED);
 	/**
 	 * @brief Activates the hyperlink in the Node if the user holds key
 	 * Ctrl.
 	 *
 	 * This slot is triggered when the user clicks on the Node.
 	 *
-	 * @param event UNUSED
+	 * @param UNUSED <i>unused</i>
 	 */
-	void mousePressEvent(QGraphicsSceneMouseEvent* event);
+	void mousePressEvent(QGraphicsSceneMouseEvent* UNUSED);
 
 private:
 	/**

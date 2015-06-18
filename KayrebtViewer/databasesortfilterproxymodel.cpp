@@ -1,3 +1,9 @@
+/**
+ * @file databasesortfilterproxymodel.h
+ * @author Laurent Georget
+ * @date 2015-06-08
+ * @brief Implementation of class DatabaseSortFilterProxyModel
+ */
 #include "databasesortfilterproxymodel.h"
 
 DatabaseSortFilterProxyModel::DatabaseSortFilterProxyModel(QObject* parent) : QSortFilterProxyModel(parent)

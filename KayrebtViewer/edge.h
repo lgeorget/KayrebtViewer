@@ -52,9 +52,9 @@ public slots:
 	/**
 	 * @brief The slot is triggered when the Edge receives a double-click.
 	 *
-	 * @param UNUSED the event from the mouse
+	 * @param UNUSED <i>unused</i>
 	 */
-	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * UNUSED);
 
 private:
 	/**

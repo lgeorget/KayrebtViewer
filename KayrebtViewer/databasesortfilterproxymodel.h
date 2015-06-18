@@ -2,6 +2,7 @@
  * @file databasesortfilterproxymodel.h
  * @author Laurent Georget
  * @date 2015-06-08
+ * @brief Definition of class DatabaseSortFilterProxyModel
  */
 #ifndef DATABASESORTFILTERPROXYMODEL_H
 #define DATABASESORTFILTERPROXYMODEL_H
@@ -32,9 +33,9 @@ public slots:
 	 * Use one of setSymbolFilterRegExp(), setDirFilterRegExp(), or
 	 * setFileFilterRegExp() instead.
 	 *
-	 * @param <i>ignored</i>
+	 * @param unused <i>ignored</i>
 	 */
-	void setFilterFixedString(const QString & ); //masked
+	void setFilterFixedString(const QString & unused); //masked
 
 	/**
 	 * @brief Empty redefinition for masking.
@@ -42,9 +43,9 @@ public slots:
 	 * Use one of setSymbolFilterRegExp(), setDirFilterRegExp(), or
 	 * setFileFilterRegExp() instead.
 	 *
-	 * @param <i>ignored</i>
+	 * @param unused <i>ignored</i>
 	 */
-	void setFilterRegExp(const QString & ); //masked
+	void setFilterRegExp(const QString & unused); //masked
 
 	/**
 	 * @brief Empty redefinition for masking.
@@ -52,9 +53,9 @@ public slots:
 	 * Use one of setSymbolFilterRegExp(), setDirFilterRegExp(), or
 	 * setFileFilterRegExp() instead.
 	 *
-	 * @param <i>ignored</i>
+	 * @param unused <i>ignored</i>
 	 */
-	void setFilterWildcard(const QString & ); //masked
+	void setFilterWildcard(const QString & unused); //masked
 
 	/**
 	 * @brief Sets the filter for the "Symbol" column.
