@@ -35,9 +35,14 @@ public:
 	 */
 	explicit Drawing(quint64 id, QString filename, QWidget *parent = 0);
 	/**
-	 * @brief Destroys the Drawing and the diagram shown on it
+	 * @brief Destroys the Drawing and the diagram shown on it.
 	 */
 	~Drawing();
+	/**
+	 * @brief Gives the identifier of the Drawing (actually the id of its diagram).
+	 * @return the identifier of the diagram shown on the Drawing
+	 */
+	qint64 getId() const;
 
 public slots:
 	/**
@@ -50,7 +55,7 @@ public slots:
 
 protected:
 	/**
-	 * @brief Reacts to a mouse wheel event by adjusting the zoom
+	 * @brief Reacts to a mouse wheel event by adjusting the zoom.
 	 *
 	 * The mouse wheel is used to zoom in and out in the Drawing. With key
 	 * Ctrl pressed, the zoom is centered on the widget center, otherwise

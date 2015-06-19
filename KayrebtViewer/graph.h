@@ -144,6 +144,12 @@ public:
 	 */
 	QString getFilename() const;
 
+	/**
+	 * @brief Gives the identifier of the diagram.
+	 * @return the identifier of the diagram
+	 */
+	qint64 getId() const;
+
 public slots:
 	/**
 	 * \brief When this slots is triggered, the Graph asks GraphViz to do

@@ -60,3 +60,8 @@ void Drawing::showContextMenu(const QPoint &point)
 			_graph->reset();
 	}
 }
+
+qint64 Drawing::getId() const
+{
+	return _graph->getId();
+}

@@ -198,3 +198,7 @@ void Graph::reset()
 	}
 }
 
+qint64 Graph::getId() const
+{
+	return _id;
+}
