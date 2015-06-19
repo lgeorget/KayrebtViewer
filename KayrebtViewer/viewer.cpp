@@ -110,7 +110,7 @@ bool Viewer::event(QEvent *event)
 		QFileInfo file(realEvent->getUrl());
 		if (!file.exists()) {
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The diagram you want does not exist.\n"
-																  "Perhaps it is an inlining symbol?\n"));
+																  "Perhaps it is a compiler-generated symbol?\n"));
 		} else {
 			quint64 id = doOpenGraph(file);
 			if (id > 0) {
