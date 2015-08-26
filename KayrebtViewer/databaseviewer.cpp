@@ -41,7 +41,6 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 		_ui->dbView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 		_ui->dbView->setSortingEnabled(true);
 		_ui->dbView->hideColumn(3); // hide line numbers
-		_ui->dbView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
 		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
 		connect(_ui->dirFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setDirFilterRegExp(QString)));
