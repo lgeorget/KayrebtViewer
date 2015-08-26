@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>429</width>
     <height>300</height>
    </rect>
   </property>
@@ -31,20 +31,70 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLineEdit" name="symbolFilter"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="dirFilter"/>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="fileFilter"/>
-      </item>
-     </layout>
+     <widget class="QGroupBox" name="filters">
+      <property name="title">
+       <string>Filters</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="symbolFilter"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="dirFilter"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="dirLabel">
+         <property name="text">
+          <string>Directory</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>filters</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLineEdit" name="fileFilter"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="symbolLabel">
+         <property name="text">
+          <string>Function name</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="fileLabel">
+         <property name="text">
+          <string>File</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="QTableView" name="dbView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
       </property>
