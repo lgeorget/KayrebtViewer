@@ -26,14 +26,13 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
     <property name="title">
-     <string>Fichier</string>
+     <string>File</string>
     </property>
-    <addaction name="actionEnregistrer_sous"/>
     <addaction name="actionOuvrir"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
@@ -54,7 +53,10 @@
   </widget>
   <action name="actionQuitter">
    <property name="text">
-    <string>Quitter</string>
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Close all windows and exit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -62,7 +64,10 @@
   </action>
   <action name="actionOuvrir">
    <property name="text">
-    <string>Ouvrir</string>
+    <string>Open...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open an existing graph</string>
    </property>
   </action>
   <action name="actionEnregistrer_sous">
