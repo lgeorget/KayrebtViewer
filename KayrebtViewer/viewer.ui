@@ -70,11 +70,6 @@
     <string>Open an existing graph</string>
    </property>
   </action>
-  <action name="actionEnregistrer_sous">
-   <property name="text">
-    <string>Save as...</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>
