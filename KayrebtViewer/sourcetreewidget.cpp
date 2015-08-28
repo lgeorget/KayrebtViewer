@@ -13,6 +13,8 @@ SourceTreeWidget::SourceTreeWidget(QWidget *parent) :
 	QString dir = QSettings().value("source tree").toString();
 	_fs = new QFileSystemModel;
 	_fs->setRootPath(dir);
+	_fs->setNameFilters({"*.h","*.c"});
+	_fs->setNameFilterDisables(false);
 
 	setModel(_fs);
 	setRootIndex(_fs->index(dir));
