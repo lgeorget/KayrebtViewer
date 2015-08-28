@@ -74,7 +74,7 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 		   << cur + QPointF(15 * qCos(angleRad-0.3), 15 * qSin(angleRad-0.3))
 		   << cur + QPointF(15 * qCos(angleRad+0.3), 15 * qSin(angleRad+0.3))
 		   << cur;
-		path.addPolygon(QPolygonF(pp));
+		_arrowHead = new QGraphicsPolygonItem(QPolygonF(pp));
 	}
 	// -----END SHAMELESSLY COPY-PASTED CODE-----
 	if (ED_label(e)) {
@@ -86,6 +86,20 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 
 	_inner = new QGraphicsPathItem(path,this);
 	_inner->setPen(defaultPen);
+	_arrowHead->setPen(defaultPen);
+	_arrowHead->setBrush(defaultPen.brush());
+}
+
+Edge::~Edge()
+{
+	delete _label;
+	delete _arrowHead;
+}
+
+void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	Element::paint(painter,option,widget);
+	_arrowHead->paint(painter,option,widget);
 }
 
 void Edge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *)
@@ -102,4 +116,18 @@ void Edge::hide()
 bool Edge::hasHighlightedAncestor() const
 {
 	return _graph->hasHighlightedAncestor(this);
+}
+
+void Edge::highlight()
+{
+	Element::highlight();
+	_arrowHead->setPen(highlightPen);
+	_arrowHead->setBrush(highlightPen.brush());
+}
+
+void Edge::unhighlight()
+{
+	Element::unhighlight();
+	_arrowHead->setPen(defaultPen);
+	_arrowHead->setBrush(defaultPen.brush());
 }

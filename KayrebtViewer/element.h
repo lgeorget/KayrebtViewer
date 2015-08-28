@@ -57,14 +57,14 @@ public:
 	 * When it is highlighted, an Element is drawn using the \a
 	 * Element::highlightPen.
 	 */
-	void highlight();
+	virtual void highlight();
 	/**
 	 * @brief Unhighlight the Element, displaying it as usual.
 	 *
 	 * When it is not highlighted, an Element is displayed using the \a
 	 * Element::unhighlightPen.
 	 */
-	void unhighlight();
+	virtual void unhighlight();
 	/**
 	 * @brief Tells whether the Element is highlighted.
 	 *

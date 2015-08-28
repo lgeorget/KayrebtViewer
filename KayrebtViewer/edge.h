@@ -35,6 +35,8 @@ public:
 	 * @param parent the parent item, probebly the graph
 	 */
 	explicit Edge(Agedge_t *v, Graph* graph, QGraphicsItem *parent = 0);
+
+	virtual ~Edge();
 	/**
 	 * @brief Mark the edge as invisible.
 	 */
@@ -45,6 +47,10 @@ public:
 	 * @return true if and only if at least one ancestor is highlighted
 	 */
 	virtual bool hasHighlightedAncestor() const;
+	virtual void highlight() override;
+	virtual void unhighlight() override;
+
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 signals:
 
