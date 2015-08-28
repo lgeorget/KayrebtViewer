@@ -16,7 +16,7 @@
 
 Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 	Element(graph, parent),
-	_gv_edge(e)
+	_gv_edge(e), _label(nullptr), _arrowHead(nullptr)
 {
 	qreal dpi = _graph->getDpi();
 	qreal scale = dpi/_graph->DOT_DEFAULT_DPI;
@@ -92,8 +92,8 @@ Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
 
 Edge::~Edge()
 {
-	delete _label;
 	delete _arrowHead;
+	delete _label;
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
