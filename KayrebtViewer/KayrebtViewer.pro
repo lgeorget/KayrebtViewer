@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     preferencesdialog.cpp \
     hyperlinkactivatedevent.cpp \
     graphitem.cpp \
-    graphitemmodel.cpp
+    graphitemmodel.cpp \
+    sourcetextviewer.cpp \
+    kernelcodehighlighter.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -45,7 +47,9 @@ HEADERS  += \
     preferencesdialog.h \
     hyperlinkactivatedevent.h \
     graphitem.h \
-    graphitemmodel.h
+    graphitemmodel.h \
+    sourcetextviewer.h \
+    kernelcodehighlighter.h
 
 FORMS    += \
     viewer.ui \

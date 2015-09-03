@@ -131,6 +131,7 @@ private:
 	 */
 	quint64 doOpenGraph(const QFileInfo &file);
 
+
 protected:
 	/**
 	 * @brief Handle the HyperlinkActivatedEvent to open a new diagram if

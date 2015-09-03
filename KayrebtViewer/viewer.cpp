@@ -13,7 +13,7 @@
 #include "hyperlinkactivatedevent.h"
 #include "graphitem.h"
 #include "graphitemmodel.h"
-
+#include "sourcetextviewer.h"
 
 quint64 Viewer::_graphsIdGenerator = 1;
 
@@ -28,22 +28,25 @@ Viewer::Viewer(QWidget *parent) :
 	_symbDb = settings.value("symbol database").toString();
 	_diagdir = settings.value("diagrams dir").toString();
 
-	_sourcesDock = new QDockWidget(this);
-	addDockWidget(Qt::RightDockWidgetArea, _sourcesDock);
-	_sourcesDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-
 	_databaseDock = new QDockWidget(this);
 	addDockWidget(Qt::LeftDockWidgetArea, _databaseDock);
 	_databaseDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+	_sourcesDock = new QDockWidget(this);
+	addDockWidget(Qt::LeftDockWidgetArea, _sourcesDock);
+	_sourcesDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 
 	_srcTreeWidget = new SourceTreeWidget(_sourcesDock);
 	_sourcesDock->setWidget(_srcTreeWidget);
 	_dbviewer = new DatabaseViewer(&_openGraphs, _databaseDock);
 	_databaseDock->setWidget(_dbviewer);
 
+	ui->sources->resize(0,ui->sources->height());
+
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
 	connect(_dbviewer, SIGNAL(graphSelected(QString)), this, SLOT(openGraph(QString)));
+	connect(_dbviewer, SIGNAL(fileSelected(QString)), ui->sources, SLOT(openSourceFile(QString)));
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
 //	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
@@ -73,7 +76,6 @@ void Viewer::openGraph(const QString& filename)
 		}
 	}
 }
-
 
 quint64 Viewer::doOpenGraph(const QFileInfo& file)
 {
