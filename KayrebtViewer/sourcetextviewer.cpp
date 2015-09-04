@@ -10,6 +10,7 @@ SourceTextViewer::SourceTextViewer(QWidget *parent) :
 {
 	highlighter = new KernelCodeHighlighter();
 	document()->setDefaultFont(MONOSPACE_FONT);
+	setCenterOnScroll(true);
 }
 
 SourceTextViewer::~SourceTextViewer()
@@ -26,6 +27,14 @@ void SourceTextViewer::openSourceFile(const QString& filename)
 			return;
 		}
 		setPlainText(file.readAll());
+		setDocumentTitle(filename);
 		highlighter->setDocument(document());
 	}
+}
+
+void SourceTextViewer::gotoLine(int line)
+{
+	QTextCursor newCursor = textCursor();
+	newCursor.setPosition(document()->findBlockByLineNumber(line-1).position());
+	setTextCursor(newCursor);
 }

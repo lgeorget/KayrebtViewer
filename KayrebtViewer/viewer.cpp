@@ -64,6 +64,7 @@ void Viewer::openSourceFile(QMdiSubWindow* window)
 	Drawing* d = static_cast<Drawing*>(window->widget());
 	QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
 	ui->sources->openSourceFile(srcFilename);
+	ui->sources->gotoLine(d->getGraph()->getSourceLine());
 }
 
 void Viewer::openGraph(const QString& filename)

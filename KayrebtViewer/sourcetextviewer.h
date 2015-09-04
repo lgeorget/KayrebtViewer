@@ -12,6 +12,7 @@ public:
 	explicit SourceTextViewer(QWidget *parent = 0);
 	~SourceTextViewer();
 	static const QFont MONOSPACE_FONT;
+	void gotoLine(int line);
 
 signals:
 
