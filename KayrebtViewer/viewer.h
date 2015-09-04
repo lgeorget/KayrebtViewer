@@ -56,6 +56,7 @@ public slots:
 	 * to open.
 	 */
 	void openGraph(const QString &filename);
+	void openSourceFile(QMdiSubWindow* window);
 
 signals:
 	/**

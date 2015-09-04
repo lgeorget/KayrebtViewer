@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     graphitem.cpp \
     graphitemmodel.cpp \
     sourcetextviewer.cpp \
-    kernelcodehighlighter.cpp
+    kernelcodehighlighter.cpp \
+    nodehoverevent.cpp
 
 HEADERS  += \
     sourcetreewidget.h \
@@ -49,7 +50,8 @@ HEADERS  += \
     graphitem.h \
     graphitemmodel.h \
     sourcetextviewer.h \
-    kernelcodehighlighter.h
+    kernelcodehighlighter.h \
+    nodehoverevent.h
 
 FORMS    += \
     viewer.ui \

@@ -40,6 +40,9 @@ Graph::Graph(quint64 id, const QString& filename, QObject *parent) : QGraphicsSc
 	if (_dpi == 0)
 		_dpi = 96.0;
 
+	_sourceFilename = QString(agget(_graph,"file"));
+	_sourceLineNumber = QString(agget(_graph,"line")).toInt();
+
 	setAttrs();
 	doLayout();
 
@@ -109,6 +112,16 @@ const Agraph_t *Graph::getAgraph() const
 qreal Graph::getDpi() const
 {
 	return _dpi;
+}
+
+const QString& Graph::getSourceFilename() const
+{
+	return _sourceFilename;
+}
+
+int Graph::getSourceLine() const
+{
+	return _sourceLineNumber;
 }
 
 void Graph::setAttrs()

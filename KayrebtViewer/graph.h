@@ -144,6 +144,10 @@ public:
 	 */
 	QString getFilename() const;
 
+	const QString& getSourceFilename() const;
+
+	int getSourceLine() const;
+
 	/**
 	 * @brief Gives the identifier of the diagram.
 	 * @return the identifier of the diagram
@@ -225,6 +229,8 @@ private:
 	 * \brief the file (in GraphViz format) from which the diagram is read
 	 */
 	QString _filename;
+	QString _sourceFilename;
+	int _sourceLineNumber;
 
 };
 

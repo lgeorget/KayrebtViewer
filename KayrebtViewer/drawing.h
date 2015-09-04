@@ -43,6 +43,11 @@ public:
 	 * @return the identifier of the diagram shown on the Drawing
 	 */
 	qint64 getId() const;
+	/**
+	 * @brief Gives the diagram displayed by the Drawing.
+	 * @return the diagram shown on the Drawing
+	 */
+	const Graph* getGraph() const { return _graph; }
 
 public slots:
 	/**
