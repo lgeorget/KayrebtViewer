@@ -17,9 +17,14 @@ for now. To compile:
 
 You will need Qt 4.8 and a C++11 compiler.
 
+Screenshots
+-----------
+![Screenshot of the menu](https://github.com/lgeorget/KayrebtViewer/blob/master/screenshot-menu.png)
+![Screenshot of the main window](https://github.com/lgeorget/KayrebtViewer/blob/master/screenshot-main_window.png)
+
 Licence
 -------
-> Copyright (C) 2015  Georget, Laurent <laurent.georget@supelec.fr>
+> Copyright (C) 2015  Georget, Laurent <laurent.georget@irisa.fr>
 >
 > This program is free software: you can redistribute it and/or modify
 > it under the terms of the GNU General Public License as published by
