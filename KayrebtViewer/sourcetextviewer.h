@@ -12,7 +12,7 @@ public:
 	explicit SourceTextViewer(QWidget *parent = 0);
 	~SourceTextViewer();
 	static const QFont MONOSPACE_FONT;
-	void gotoLine(int line);
+	void gotoLine(int line, bool centerOnCursor = true);
 
 	void lineNumberAreaPaintEvent(QPaintEvent *event);
 	int lineNumberAreaWidth();
@@ -25,7 +25,7 @@ signals:
 
 public slots:
 	void openSourceFile(const QString& filename);
-	void highlightLines(int start, int end);
+	void highlightLines(int start, int end, bool centerOnScroll = true);
 
 private slots:
 	void updateLineNumberAreaWidth(int newBlockCount);

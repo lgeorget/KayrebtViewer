@@ -16,7 +16,7 @@ SourceTextViewer::SourceTextViewer(QWidget *parent) :
 {
 	highlighter = new KernelCodeHighlighter();
 	document()->setDefaultFont(MONOSPACE_FONT);
-	setCenterOnScroll(true);
+//	setCenterOnScroll(true);
 
 	lineNumberArea = new LineNumberArea(this);
 
@@ -31,7 +31,7 @@ SourceTextViewer::~SourceTextViewer()
 	delete highlighter;
 }
 
-void SourceTextViewer::highlightLines(int start, int end)
+void SourceTextViewer::highlightLines(int start, int end, bool centerOnScroll)
 {
 	QList<QTextEdit::ExtraSelection> highlightedLines;
 
@@ -46,6 +46,7 @@ void SourceTextViewer::highlightLines(int start, int end)
 		highlightedLines.append(highlightedLine);
 	}
 	setExtraSelections(QList<QTextEdit::ExtraSelection>(highlightedLines));
+	gotoLine(start, centerOnScroll);
 }
 
 void SourceTextViewer::updateSize()
@@ -134,9 +135,11 @@ void SourceTextViewer::openSourceFile(const QString& filename)
 	}
 }
 
-void SourceTextViewer::gotoLine(int line)
+void SourceTextViewer::gotoLine(int line, bool centerOnCursor)
 {
 	QTextCursor newCursor = textCursor();
 	newCursor.setPosition(document()->findBlockByNumber(line-1).position());
 	setTextCursor(newCursor);
+	if (centerOnCursor)
+		centerCursor();
 }

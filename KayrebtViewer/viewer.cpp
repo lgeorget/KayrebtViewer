@@ -66,7 +66,7 @@ void Viewer::openSourceFile(QMdiSubWindow* window)
 		Drawing* d = static_cast<Drawing*>(window->widget());
 		QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
 		ui->sources->openSourceFile(srcFilename);
-		ui->sources->gotoLine(d->getGraph()->getSourceLine());
+		// ui->sources->gotoLine(d->getGraph()->getSourceLine()); // implicitly done by highlightLines below
 		ui->sources->highlightLines(d->getGraph()->getSourceLine()-1,d->getGraph()->getSourceLine());
 	} else if (ui->docs->subWindowList().isEmpty()) {
 		ui->sources->clear();
@@ -140,7 +140,7 @@ bool Viewer::event(QEvent *event)
 		return true;
 	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
 		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
-		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber());
+		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
 	} else {
 		return QMainWindow::event(event);
 	}
