@@ -22,6 +22,7 @@
 #include "edge.h"
 #include "node.h"
 #include "hyperlinkactivatedevent.h"
+#include "nodehoverevent.h"
 
 const qreal Graph::DOT_DEFAULT_DPI = 72.0;
 const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
@@ -195,6 +196,16 @@ void Graph::callOtherGraph(QString url)
 	for (int i=0 ; i<topLevels.size() ; i++)
 		if (topLevels[i]->isActiveWindow()) // send the event to the main window
 			qApp->sendEvent(topLevels[i], &hyperlink);
+}
+
+void Graph::highlightLineInSourceCode(int line)
+{
+	NodeHoverEvent hovering(line);
+	//qDebug() << "new Hyperlink event " << &hyperlink;
+	QList<QWidget*> topLevels = qApp->topLevelWidgets();
+	for (int i=0 ; i<topLevels.size() ; i++)
+		if (topLevels[i]->isActiveWindow()) // send the event to the main window
+			qApp->sendEvent(topLevels[i], &hovering);
 }
 
 void Graph::reset()

@@ -11,6 +11,7 @@
 #include "drawing.h"
 #include "ui_viewer.h"
 #include "hyperlinkactivatedevent.h"
+#include "nodehoverevent.h"
 #include "graphitem.h"
 #include "graphitemmodel.h"
 #include "sourcetextviewer.h"
@@ -61,10 +62,15 @@ void Viewer::openGraph()
 
 void Viewer::openSourceFile(QMdiSubWindow* window)
 {
-	Drawing* d = static_cast<Drawing*>(window->widget());
-	QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
-	ui->sources->openSourceFile(srcFilename);
-	ui->sources->gotoLine(d->getGraph()->getSourceLine());
+	if (window) {
+		Drawing* d = static_cast<Drawing*>(window->widget());
+		QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
+		ui->sources->openSourceFile(srcFilename);
+		ui->sources->gotoLine(d->getGraph()->getSourceLine());
+		ui->sources->highlightLines(d->getGraph()->getSourceLine()-1,d->getGraph()->getSourceLine());
+	} else if (ui->docs->subWindowList().isEmpty()) {
+		ui->sources->clear();
+	}
 }
 
 void Viewer::openGraph(const QString& filename)
@@ -132,6 +138,9 @@ bool Viewer::event(QEvent *event)
 
 		event->accept();
 		return true;
+	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
+		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
+		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber());
 	} else {
 		return QMainWindow::event(event);
 	}

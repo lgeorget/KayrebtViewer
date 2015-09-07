@@ -97,6 +97,9 @@ public slots:
 	 */
 	void mousePressEvent(QGraphicsSceneMouseEvent* UNUSED);
 
+signals:
+	void nodeWithLineInformationHovered(int line);
+
 private:
 	/**
 	 * @brief the GraphViz data structure representing the node
@@ -110,6 +113,8 @@ private:
 	 * @brief the URL carried by the node, possibly empty
 	 */
 	QString _url;
+
+	int _line = 0;
 
 	/**
 	 * @brief Draws the Node, using GraphViz's layout information

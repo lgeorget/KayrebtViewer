@@ -166,6 +166,8 @@ public slots:
 	 */
 	void reset();
 
+	void highlightLineInSourceCode(int line);
+
 private:
 	/**
 	 * \brief Adds a node to the Graph.

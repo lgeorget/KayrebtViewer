@@ -6,7 +6,7 @@ NodeHoverEvent::NodeHoverEvent(int lineNumber) : QEvent(NODE_HOVER_EVENT), _line
 {
 }
 
-int NodeHoverEvent::getLineNumber()
+int NodeHoverEvent::getLineNumber() const
 {
 	return _lineNumber;
 }

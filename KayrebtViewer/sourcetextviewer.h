@@ -14,13 +14,28 @@ public:
 	static const QFont MONOSPACE_FONT;
 	void gotoLine(int line);
 
+	void lineNumberAreaPaintEvent(QPaintEvent *event);
+	int lineNumberAreaWidth();
+	QSize sizeHint();
+
+protected:
+	void resizeEvent(QResizeEvent *e);
+
 signals:
 
 public slots:
 	void openSourceFile(const QString& filename);
+	void highlightLines(int start, int end);
+
+private slots:
+	void updateLineNumberAreaWidth(int newBlockCount);
+	void updateLineNumberArea(const QRect &, int);
+	void updateSize();
 
 private:
 	QSyntaxHighlighter *highlighter;
+	QWidget *lineNumberArea;
+	static const QColor HIGHLIGHTED_LINE_COLOR;
 };
 
 #endif // SOURCETEXTVIEWER_H

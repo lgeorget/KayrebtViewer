@@ -12,7 +12,7 @@ public:
 	 */
 	static const QEvent::Type NODE_HOVER_EVENT;
 
-	int getLineNumber();
+	int getLineNumber() const;
 
 private:
 	int _lineNumber;

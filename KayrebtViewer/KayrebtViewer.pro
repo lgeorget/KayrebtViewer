@@ -51,7 +51,8 @@ HEADERS  += \
     graphitemmodel.h \
     sourcetextviewer.h \
     kernelcodehighlighter.h \
-    nodehoverevent.h
+    nodehoverevent.h \
+    linenumberarea.h
 
 FORMS    += \
     viewer.ui \

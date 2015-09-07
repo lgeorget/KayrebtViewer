@@ -32,7 +32,13 @@ Node::Node(Agnode_t *v, Graph *graph, QGraphicsItem *parent) :
 		setCursor(QCursor(Qt::PointingHandCursor));
 	}
 
+	QString line(agget(_gv_node, "line"));
+	if (!line.isEmpty()) {
+		_line = line.toInt();
+	}
+
 	setAcceptHoverEvents(true);
+	connect(this, SIGNAL(nodeWithLineInformationHovered(int)), _graph, SLOT(highlightLineInSourceCode(int)));
 }
 
 QAbstractGraphicsShapeItem *Node::draw()
@@ -114,6 +120,8 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
 	_graph->pimpSubTree(this,&Element::highlight);
+	if (_line)
+		emit nodeWithLineInformationHovered(_line);
 }
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
