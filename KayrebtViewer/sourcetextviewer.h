@@ -36,6 +36,7 @@ private:
 	QSyntaxHighlighter *highlighter;
 	QWidget *lineNumberArea;
 	static const QColor HIGHLIGHTED_LINE_COLOR;
+	static const QColor LINE_NUMBER_AREA_COLOR;
 };
 
 #endif // SOURCETEXTVIEWER_H

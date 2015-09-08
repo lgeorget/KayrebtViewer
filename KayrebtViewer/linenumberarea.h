@@ -7,21 +7,21 @@
 class LineNumberArea : public QWidget
 {
 public:
-	LineNumberArea(SourceTextViewer *viewer) : QWidget(viewer) {
-		textViewer = viewer;
+	LineNumberArea(SourceTextViewer *viewer) : QWidget(viewer), _textViewer(viewer) {
+		this->setFont(_textViewer->document()->defaultFont());
 	}
 
 	QSize sizeHint() const {
-		return QSize(textViewer->lineNumberAreaWidth(), 0);
+		return QSize(_textViewer->lineNumberAreaWidth(), 0);
 	}
 
 protected:
 	void paintEvent(QPaintEvent *event) {
-		textViewer->lineNumberAreaPaintEvent(event);
+		_textViewer->lineNumberAreaPaintEvent(event);
 	}
 
 private:
-	SourceTextViewer *textViewer;
+	SourceTextViewer *_textViewer;
 };
 
 #endif // LINENUMBERAREA_H
