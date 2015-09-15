@@ -6,7 +6,6 @@
  */
 #include <QProcess>
 #include <QDebug>
-#include <QtAlgorithms>
 #include <exception>
 #include <QWheelEvent>
 #include <QInputEvent>
@@ -14,7 +13,6 @@
 #include <QMenu>
 #include "graph.h"
 #include "drawing.h"
-
 
 Drawing::Drawing(quint64 id, QString inputFileName, QWidget *parent) :
 	QGraphicsView(parent)
