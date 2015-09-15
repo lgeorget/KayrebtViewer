@@ -36,10 +36,8 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 			_db->fetchMore();         // the filtering proxy with incremental data
 		}
 		_ui->dbView->setModel(_dbFilter);
-
-		_ui->dbView->verticalHeader()->hide();
-		_ui->dbView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		_ui->dbView->setSortingEnabled(true);
+		_ui->dbView->setSortingEnabled(true);  // Necessary to do this _after_ having
+		_ui->dbView->resizeColumnsToContents();// fully populated the model
 		_ui->dbView->hideColumn(3); // hide line numbers
 
 		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
