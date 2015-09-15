@@ -109,9 +109,8 @@ quint64 Viewer::doOpenGraph(const QFileInfo& file)
 	if (!found) {
 		id = _graphsIdGenerator++;
 		Drawing *d = new Drawing(id, newFileName, this);
-		d->centerOn(d->mapToScene(d->scene()->width()/2, 0));
 		subw = ui->docs->addSubWindow(d);
-		subw->setWindowTitle(newFileName);
+		subw->setWindowTitle(file.baseName());
 	}
 
 	ui->docs->setActiveSubWindow(subw);
