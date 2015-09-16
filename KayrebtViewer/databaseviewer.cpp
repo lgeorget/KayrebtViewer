@@ -37,7 +37,7 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 		}
 		_ui->dbView->setModel(_dbFilter);
 		_ui->dbView->setSortingEnabled(true);  // Necessary to do this _after_ having
-		_ui->dbView->resizeColumnsToContents();// fully populated the model
+		_ui->dbView->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);// fully populated the model
 		_ui->dbView->hideColumn(3); // hide line numbers
 
 		connect(_ui->symbolFilter, SIGNAL(textChanged(QString)), _dbFilter, SLOT(setSymbolFilterRegExp(QString)));
