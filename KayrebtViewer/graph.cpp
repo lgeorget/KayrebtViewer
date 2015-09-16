@@ -47,11 +47,7 @@ Graph::Graph(quint64 id, const QString& filename, QObject *parent) : QGraphicsSc
 	setAttrs();
 	doLayout();
 
-	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
-		addNode(v);
-		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e))
-			addEdge(e);
-	}
+	build();
 }
 
 Graph::~Graph()
@@ -60,6 +56,15 @@ Graph::~Graph()
 	gvFreeContext(_gv_con);
 	qDeleteAll(_nodes);
 	qDeleteAll(_edges);
+}
+
+void Graph::build()
+{
+	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
+		addNode(v);
+		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e))
+			addEdge(e);
+	}
 }
 
 void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::function<bool (Element&)> test, bool incomingEdgesAreConcerned)

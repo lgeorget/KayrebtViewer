@@ -48,6 +48,8 @@ public:
 	 * \param parent the parent object of the diagram
 	 */
 	Graph(quint64 id, const QString& filename, QObject *parent = nullptr);
+	void build();
+
 	/**
 	 * \brief Destroys the diagram and frees associated GraphViz resources.
 	 */

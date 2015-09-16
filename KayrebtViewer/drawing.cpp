@@ -54,6 +54,7 @@ void Drawing::zoomToFit()
 void Drawing::showEvent(QShowEvent *event)
 {
 	if (!alreadyShown) {
+		_graph->build();
 		zoomToFit();
 		alreadyShown = true;
 	}
