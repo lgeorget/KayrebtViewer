@@ -7,7 +7,7 @@
 #include "viewer.h"
 #include "preferencesdialog.h"
 #include <QApplication>
-
+#include <graph.h>
 
 /**
  * @fn main
@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 		return 0; //early exit
 	}
 
+	aginit();
 	Viewer w;
 	w.show();
 
