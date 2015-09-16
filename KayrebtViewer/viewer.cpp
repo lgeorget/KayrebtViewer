@@ -42,7 +42,7 @@ Viewer::Viewer(QWidget *parent) :
 	_dbviewer = new DatabaseViewer(&_openGraphs, _databaseDock);
 	_databaseDock->setWidget(_dbviewer);
 
-	ui->sources->setFixedWidth(0);
+	ui->sources->setMinimumWidth(0);
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
