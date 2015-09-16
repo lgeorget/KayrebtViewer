@@ -46,6 +46,20 @@ Drawing::~Drawing()
 	delete _graph;
 }
 
+void Drawing::zoomToFit()
+{
+	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void Drawing::showEvent(QShowEvent *event)
+{
+	if (!alreadyShown) {
+		zoomToFit();
+		alreadyShown = true;
+	}
+	QGraphicsView::showEvent(event);
+}
+
 void Drawing::showContextMenu(const QPoint &point)
 {
 	QPoint globalPos = mapToGlobal(point);

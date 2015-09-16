@@ -44,5 +44,5 @@ void SourceTreeWidget::selectFile(const QString& file) {
 
 	QModelIndex index = _fs->index(file);
 	setCurrentIndex(index);
-	scrollTo(index, QAbstractItemView::PositionAtCenter);
+	expand(index);
 }

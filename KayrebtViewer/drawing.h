@@ -38,6 +38,7 @@ public:
 	 * @brief Destroys the Drawing and the diagram shown on it.
 	 */
 	~Drawing();
+
 	/**
 	 * @brief Gives the identifier of the Drawing (actually the id of its diagram).
 	 * @return the identifier of the diagram shown on the Drawing
@@ -57,6 +58,7 @@ public slots:
 	 * menu should appear
 	 */
 	void showContextMenu(const QPoint& point);
+	void zoomToFit();
 
 protected:
 	/**
@@ -68,13 +70,15 @@ protected:
 	 *
 	 * @param event the event received from the mouse
 	 */
-	virtual void wheelEvent(QWheelEvent *event);
+	virtual void wheelEvent(QWheelEvent *event) override;
+	virtual void showEvent(QShowEvent *event) override;
 
 private:
 	/**
 	 * @brief the diagram displayed on the Drawing
 	 */
 	Graph *_graph;
+	bool alreadyShown = false;
 };
 
 #endif // DRAWING_H

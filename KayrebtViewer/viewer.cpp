@@ -101,7 +101,7 @@ quint64 Viewer::doOpenGraph(const QFileInfo& file)
 	QMdiSubWindow* subw;
 	for (int i = 0 ; i < ui->docs->subWindowList().size() && !found ; ++i ) {
 		subw = ui->docs->subWindowList()[i];
-		if (subw->windowTitle() == newFileName) {
+		if (subw->windowTitle() == file.baseName()) {
 			found = true;
 		}
 	}
