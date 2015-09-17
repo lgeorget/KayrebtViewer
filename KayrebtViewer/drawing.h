@@ -10,7 +10,6 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-
 class Graph;
 
 /**
@@ -60,6 +59,12 @@ public slots:
 	void showContextMenu(const QPoint& point);
 	void zoomToFit();
 
+private slots:
+	void setGraphReady();
+
+signals:
+	void readyForDisplay();
+
 protected:
 	/**
 	 * @brief Reacts to a mouse wheel event by adjusting the zoom.
@@ -71,14 +76,15 @@ protected:
 	 * @param event the event received from the mouse
 	 */
 	virtual void wheelEvent(QWheelEvent *event) override;
-	virtual void showEvent(QShowEvent *event) override;
+	virtual void paintEvent(QPaintEvent *event) override;
 
 private:
 	/**
 	 * @brief the diagram displayed on the Drawing
 	 */
 	Graph *_graph;
-	bool alreadyShown = false;
+	bool _alreadyShown = false;
+	bool _graphReady = false;
 };
 
 #endif // DRAWING_H

@@ -34,7 +34,7 @@ public:
 	 * @param graph the graph in which the Node is added
 	 * @param parent the parent object of the Node
 	 */
-	explicit Node(Agnode_t *v, Graph* graph, QGraphicsItem *parent = 0);
+	explicit Node(Agnode_t *v, Graph* graph);
 	/**
 	 * @brief Destroys the Node and frees associated GraphViz's resources.
 	 */

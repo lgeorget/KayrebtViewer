@@ -17,6 +17,8 @@
 #include <QEvent>
 #include <QFileInfo>
 #include <QSettings>
+#include <QMutex>
+#include <QtCore>
 #include <types.h>
 #include "graph.h"
 #include "edge.h"
@@ -27,7 +29,9 @@
 const qreal Graph::DOT_DEFAULT_DPI = 72.0;
 const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
 
-Graph::Graph(quint64 id, const QString& filename, QObject *parent) : QGraphicsScene(parent), _id(id), _gv_con(gvContext()), _graph(), _filename(filename)
+QMutex Graph::_graphviz;
+
+Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsScene(parent), _id(id), _gv_con(gvContext()), _graph(), _filename(filename)
 {
 	std::FILE* fp = fopen(qPrintable(filename), "r");
 	if (fp == nullptr)
@@ -45,9 +49,7 @@ Graph::Graph(quint64 id, const QString& filename, QObject *parent) : QGraphicsSc
 	_sourceLineNumber = QString(agget(_graph,"line")).toInt();
 
 	setAttrs();
-	doLayout();
-
-	build();
+	connect(this, SIGNAL(layoutDone()), this, SLOT(doBuild()));
 }
 
 Graph::~Graph()
@@ -60,11 +62,17 @@ Graph::~Graph()
 
 void Graph::build()
 {
+	QtConcurrent::run(this, &Graph::doLayout);
+}
+
+void Graph::doBuild()
+{
 	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
 		addNode(v);
 		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e))
 			addEdge(e);
 	}
+	emit graphBuilt();
 }
 
 void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::function<bool (Element&)> test, bool incomingEdgesAreConcerned)
@@ -138,11 +146,13 @@ void Graph::setAttrs()
 
 void Graph::doLayout()
 {
+	_graphviz.lock();
 	gvFreeLayout(_gv_con, _graph);
 	gvLayout(_gv_con, _graph, "dot");
-
+	_graphviz.unlock();
 	setSceneRect(GD_bb(_graph).LL.x*(_dpi/DOT_DEFAULT_DPI), GD_bb(_graph).LL.y*(_dpi/DOT_DEFAULT_DPI),
-				  GD_bb(_graph).UR.x*(_dpi/DOT_DEFAULT_DPI), GD_bb(_graph).UR.y*(_dpi/DOT_DEFAULT_DPI));
+				 GD_bb(_graph).UR.x*(_dpi/DOT_DEFAULT_DPI), GD_bb(_graph).UR.y*(_dpi/DOT_DEFAULT_DPI));
+	emit layoutDone();
 }
 
 QString Graph::getFilename() const

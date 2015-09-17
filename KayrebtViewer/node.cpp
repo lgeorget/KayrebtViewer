@@ -19,8 +19,8 @@
 #include "graph.h"
 #include "element.h"
 
-Node::Node(Agnode_t *v, Graph *graph, QGraphicsItem *parent) :
-	Element(graph, parent),
+Node::Node(Agnode_t *v, Graph *graph) :
+	Element(graph),
 	_gv_node(v),
 	_label(new QGraphicsSimpleTextItem(this))
 {

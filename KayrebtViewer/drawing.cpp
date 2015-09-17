@@ -11,6 +11,8 @@
 #include <QInputEvent>
 #include <QEvent>
 #include <QMenu>
+#include <QTimer>
+#include <QtCore>
 #include "graph.h"
 #include "drawing.h"
 
@@ -18,12 +20,16 @@ Drawing::Drawing(quint64 id, QString inputFileName, QWidget *parent) :
 	QGraphicsView(parent)
 {
 	_graph = new Graph(id, inputFileName, this);
-	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-	setScene(_graph);
-	setDragMode(QGraphicsView::ScrollHandDrag);
-
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+
+	QGraphicsScene* temporaryScene = new QGraphicsScene();
+	temporaryScene->addText("Graph in construction, a moment please...\n (remember I can draw only one graph at a time (wait until next release ;) )");
+	temporaryScene->setBackgroundBrush(QBrush(Qt::gray));
+	setScene(temporaryScene);
+
+	connect(_graph, SIGNAL(graphBuilt()), this, SLOT(setGraphReady()));
+	_graph->build();
 }
 
 void Drawing::wheelEvent(QWheelEvent *event)
@@ -43,7 +49,7 @@ void Drawing::wheelEvent(QWheelEvent *event)
 
 Drawing::~Drawing()
 {
-	delete _graph;
+	_graph->deleteLater();
 }
 
 void Drawing::zoomToFit()
@@ -51,14 +57,26 @@ void Drawing::zoomToFit()
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void Drawing::showEvent(QShowEvent *event)
+void Drawing::setGraphReady()
 {
-	if (!alreadyShown) {
-		_graph->build();
+	_graphReady = true;
+	QGraphicsScene* oldScene = scene();
+	setScene(_graph);
+	oldScene->deleteLater();
+
+	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+	setDragMode(QGraphicsView::ScrollHandDrag);
+	invalidateScene();
+}
+
+void Drawing::paintEvent(QPaintEvent *event)
+{
+	if (!_alreadyShown && _graphReady) {
+		_alreadyShown = true;
 		zoomToFit();
-		alreadyShown = true;
 	}
-	QGraphicsView::showEvent(event);
+
+	QGraphicsView::paintEvent(event);
 }
 
 void Drawing::showContextMenu(const QPoint &point)

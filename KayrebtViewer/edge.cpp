@@ -14,8 +14,8 @@
 #include "edge.h"
 #include "graph.h"
 
-Edge::Edge(Agedge_t *e, Graph *graph, QGraphicsItem *parent) :
-	Element(graph, parent),
+Edge::Edge(Agedge_t *e, Graph *graph) :
+	Element(graph),
 	_gv_edge(e), _label(nullptr), _arrowHead(nullptr)
 {
 	qreal dpi = _graph->getDpi();

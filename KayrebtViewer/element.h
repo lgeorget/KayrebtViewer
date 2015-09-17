@@ -29,7 +29,7 @@ public:
 	 * @param parent the parent item of the Element, the diagram in most
 	 * cases
 	 */
-	explicit Element(Graph* graph, QGraphicsItem *parent = 0);
+	explicit Element(Graph* graph, QGraphicsItem *parent = nullptr);
 	/**
 	 * @brief Destroys the Element, and frees the associated GraphViz
 	 * resources.

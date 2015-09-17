@@ -14,6 +14,7 @@
 #include <QMap>
 #include <QPair>
 #include <QFont>
+#include <QMutex>
 #include <functional>
 
 class Node;
@@ -47,8 +48,7 @@ public:
 	 * \param filename the file where the diagram is stored
 	 * \param parent the parent object of the diagram
 	 */
-	Graph(quint64 id, const QString& filename, QObject *parent = nullptr);
-	void build();
+	Graph(quint64 id, const QString& filename, QObject* parent = nullptr);
 
 	/**
 	 * \brief Destroys the diagram and frees associated GraphViz resources.
@@ -158,17 +158,25 @@ public:
 
 public slots:
 	/**
-	 * \brief When this slots is triggered, the Graph asks GraphViz to do
-	 * the layout of the diagram.
-	 */
-	void doLayout();
-	/**
 	 * \brief Restores the diagram to its initial state, with all the
 	 * elements visible.
 	 */
 	void reset();
+	void build();
 
 	void highlightLineInSourceCode(int line);
+
+signals:
+	void graphBuilt();
+	void layoutDone();
+
+private slots:
+	/**
+	 * \brief When this slots is triggered, the Graph asks GraphViz to do
+	 * the layout of the diagram.
+	 */
+	void doLayout();
+	void doBuild();
 
 private:
 	/**
@@ -235,6 +243,8 @@ private:
 	QString _filename;
 	QString _sourceFilename;
 	int _sourceLineNumber;
+
+	static QMutex _graphviz;
 
 };
 

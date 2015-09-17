@@ -34,7 +34,7 @@ public:
 	 * @param graph the diagram in which the edge is added
 	 * @param parent the parent item, probebly the graph
 	 */
-	explicit Edge(Agedge_t *v, Graph* graph, QGraphicsItem *parent = 0);
+	explicit Edge(Agedge_t *v, Graph* graph);
 
 	virtual ~Edge();
 	/**
