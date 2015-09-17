@@ -67,6 +67,7 @@ void Drawing::setGraphReady()
 	setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 	setDragMode(QGraphicsView::ScrollHandDrag);
 	invalidateScene();
+	disconnect(_graph, SIGNAL(graphBuilt()), this, SLOT(setGraphReady()));
 }
 
 void Drawing::paintEvent(QPaintEvent *event)

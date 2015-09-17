@@ -7,6 +7,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QGraphicsView>
+#include <types.h>
 #include "viewer.h"
 #include "drawing.h"
 #include "ui_viewer.h"
@@ -17,6 +18,7 @@
 #include "sourcetextviewer.h"
 
 quint64 Viewer::_graphsIdGenerator = 1;
+GVC_t* Viewer::GRAPHVIZ_CONTEXT = gvContext();
 
 Viewer::Viewer(QWidget *parent) :
 	QMainWindow(parent),
@@ -147,5 +149,6 @@ bool Viewer::event(QEvent *event)
 
 Viewer::~Viewer()
 {
+	gvFreeContext(GRAPHVIZ_CONTEXT); //safe, at this point, all the graphs are already closed
 	delete ui;
 }

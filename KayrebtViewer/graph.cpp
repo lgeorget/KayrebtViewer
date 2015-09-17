@@ -20,6 +20,7 @@
 #include <QMutex>
 #include <QtCore>
 #include <types.h>
+#include "viewer.h"
 #include "graph.h"
 #include "edge.h"
 #include "node.h"
@@ -31,7 +32,7 @@ const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
 
 QMutex Graph::_graphviz;
 
-Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsScene(parent), _id(id), _gv_con(gvContext()), _graph(), _filename(filename)
+Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsScene(parent), _id(id), _gv_con(Viewer::GRAPHVIZ_CONTEXT), _graph(), _filename(filename)
 {
 	std::FILE* fp = fopen(qPrintable(filename), "r");
 	if (fp == nullptr)
@@ -54,8 +55,9 @@ Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsSc
 
 Graph::~Graph()
 {
+	_graphviz.lock();
 	gvFreeLayout(_gv_con, _graph);
-	gvFreeContext(_gv_con);
+	_graphviz.unlock();
 	qDeleteAll(_nodes);
 	qDeleteAll(_edges);
 }

@@ -43,6 +43,6 @@ void SourceTreeWidget::selectFile(const QString& file) {
 	collapseAll();
 
 	QModelIndex index = _fs->index(file);
-	setCurrentIndex(index);
 	expand(index);
+	setCurrentIndex(index);
 }

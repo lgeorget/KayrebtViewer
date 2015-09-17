@@ -43,6 +43,10 @@ public:
 	 * @brief Destroys the window and its components.
 	 */
 	~Viewer();
+	/**
+	 * \brief the context for GraphViz
+	 */
+	static GVC_t* GRAPHVIZ_CONTEXT;
 
 public slots:
 	/**
