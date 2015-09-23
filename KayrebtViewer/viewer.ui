@@ -33,6 +33,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="activationOrder">
+        <enum>QMdiArea::ActivationHistoryOrder</enum>
+       </property>
        <property name="viewMode">
         <enum>QMdiArea::TabbedView</enum>
        </property>
