@@ -26,11 +26,11 @@ signals:
 public slots:
 	void openSourceFile(const QString& filename);
 	void highlightLines(int start, int end, bool centerOnScroll = true);
+	void updateSize();
 
 private slots:
 	void updateLineNumberAreaWidth(int newBlockCount);
 	void updateLineNumberArea(const QRect &, int);
-	void updateSize();
 
 private:
 	QSyntaxHighlighter *highlighter;

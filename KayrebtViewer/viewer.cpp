@@ -44,7 +44,8 @@ Viewer::Viewer(QWidget *parent) :
 	_dbviewer = new DatabaseViewer(&_openGraphs, _databaseDock);
 	_databaseDock->setWidget(_dbviewer);
 
-	ui->sources->setMinimumWidth(0);
+	// force the source viewer closed before first graph is opened
+	ui->sources->updateSize();
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
