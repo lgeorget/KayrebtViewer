@@ -143,6 +143,8 @@ bool Viewer::event(QEvent *event)
 	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
 		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
 		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
+		event->accept();
+		return true;
 	} else {
 		return QMainWindow::event(event);
 	}
