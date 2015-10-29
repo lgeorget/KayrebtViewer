@@ -38,7 +38,7 @@ Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsSc
 	if (fp == nullptr)
 		throw std::runtime_error("Couldn't open input graph");
 
-	_graph = agread(fp);
+	_graph = agread(fp, nullptr);
 	if (!_graph)
 		throw std::runtime_error("Couldn't parse graph from input file");
 
@@ -58,6 +58,7 @@ Graph::~Graph()
 	_graphviz.lock();
 	gvFreeLayout(_gv_con, _graph);
 	_graphviz.unlock();
+	agclose(_graph);
 	qDeleteAll(_nodes);
 	qDeleteAll(_edges);
 }
@@ -86,24 +87,24 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 	waitingNodes.enqueue(v);
 	while (!waitingNodes.empty()) {
 		Agnode_t* currentNode = waitingNodes.dequeue();
-		f(*_nodes[currentNode->id]);
+		f(*_nodes[currentNode]);
 		if (incomingEdgesAreConcerned) {
 			for (Agedge_t* in = agfstin(_graph,currentNode) ; in ; in = agnxtin(_graph,in)) {
-				f(*_edges[in->id]);
+				f(*_edges[in]);
 			}
 		}
 
 		for (Agedge_t* e = agfstout(_graph,currentNode) ; e ; e = agnxtout(_graph,e)) {
-			Agnode_t* nextNode = e->head;
+			Agnode_t* nextNode = aghead(e);
 			bool toProcess = true;
 			if (test != nullptr) {
 				for (Agedge_t* in = agfstin(_graph,nextNode) ; in && toProcess ; in = agnxtin(_graph,in)) {
-					Node* tested = _nodes[in->tail->id];
+					Node* tested = _nodes[agtail(in)];
 					if (test(*tested))
 						toProcess = false;
 				}
 			}
-			f(*_edges[e->id]);
+			f(*_edges[e]);
 			if (toProcess && !waitingNodes.contains(nextNode) && !finishedNodes.contains(nextNode)) {
 				waitingNodes.enqueue(nextNode);
 			}
@@ -115,7 +116,7 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 void Graph::pimpSubTree(Edge *e, std::function<void (Element &)> f, std::function<bool (Element&)> test)
 {
 	f(*e);
-	Node *n = _nodes[e->_gv_edge->head->id];
+	Node *n = _nodes[aghead(e->_gv_edge)];
 	if (!test(*n))
 		pimpSubTree(n,f,test);
 }
@@ -142,8 +143,8 @@ int Graph::getSourceLine() const
 
 void Graph::setAttrs()
 {
-	agnodeattr(_graph, "fontname", const_cast<char*>(qPrintable(MONOSPACE_FONT.family())));
-	agnodeattr(_graph, "fontsize", const_cast<char*>(qPrintable(QString("%1").arg(MONOSPACE_FONT.pointSizeF()*DOT_DEFAULT_DPI/_dpi))));
+	agattr(_graph, AGNODE, "fontname", const_cast<char*>(qPrintable(MONOSPACE_FONT.family())));
+	agattr(_graph, AGNODE, "fontsize", const_cast<char*>(qPrintable(QString("%1").arg(MONOSPACE_FONT.pointSizeF()*DOT_DEFAULT_DPI/_dpi))));
 }
 
 void Graph::doLayout()
@@ -166,28 +167,28 @@ void Graph::addNode(Agnode_t* v)
 {
 	Node* node = new Node(v,this);
 	addItem(node);
-	_nodes[v->id] = node;
+	_nodes[v] = node;
 }
 
 void Graph::addEdge(Agedge_t* e)
 {
 	Edge* edge = new Edge(e,this);
 	addItem(edge);
-	_edges[e->id] = edge;
+	_edges[e] = edge;
 }
 
 bool Graph::hasHighlightedAncestor(const Node* n)
 {
 	bool ancestorHighlighted = false;
 	for (Agedge_t* in = agfstin(_graph,n->_gv_node) ; in && !ancestorHighlighted ; in = agnxtin(_graph,in)) {
-		ancestorHighlighted = _edges[in->id]->isHighlighted();
+		ancestorHighlighted = _edges[in]->isHighlighted();
 	}
 	return ancestorHighlighted;
 }
 
 bool Graph::hasHighlightedAncestor(const Edge* e)
 {
-	return hasHighlightedAncestor(_nodes[e->_gv_edge->tail->id]);
+	return hasHighlightedAncestor(_nodes[agtail(e->_gv_edge)]);
 }
 
 void Graph::callOtherGraph(QString url)
@@ -229,12 +230,12 @@ void Graph::reset()
 {
 	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
 		agsafeset(v, "style", "normal", "normal");
-		_nodes[v->id]->setVisible(true);
-		_nodes[v->id]->unhighlight();
+		_nodes[v]->setVisible(true);
+		_nodes[v]->unhighlight();
 		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e)) {
 			agsafeset(e, "style", "normal", "normal");
-			_edges[e->id]->setVisible(true);
-			_edges[e->id]->unhighlight();
+			_edges[e]->setVisible(true);
+			_edges[e]->unhighlight();
 		}
 	}
 }

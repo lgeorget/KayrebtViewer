@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
 		return 0; //early exit
 	}
 
-	aginit();
+//	aginit(); //seems to be no longer necessary in libcgraph.so.6
+			  //if we don't use custom node and edge structs
 	Viewer w;
 	w.show();
 

@@ -224,7 +224,7 @@ private:
 	 *         return _nodes[n->id];
 	 *     }
 	 */
-	QMap<int,Node*> _nodes;
+	QMap<Agnode_t*,Node*> _nodes;
 	/**
 	 * \brief the edges of the diagram, indexed by the GraphViz edges' ids
 	 *
@@ -232,11 +232,11 @@ private:
 	 * corresponding Agedge_t pointer.
 	 * Example:
 	 *
-	 *     Node* getEdgeFromAgedge_t(Agedge_t* e) {
+	 *     Edge* getEdgeFromAgedge_t(Agedge_t* e) {
 	 *         return _edges[e->id];
 	 *     }
 	 */
-	QMap<int,Edge*> _edges;
+	QMap<Agedge_t*,Edge*> _edges;
 	/**
 	 * \brief the file (in GraphViz format) from which the diagram is read
 	 */
