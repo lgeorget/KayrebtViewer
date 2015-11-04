@@ -106,6 +106,7 @@ void Node::hide()
 void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)
 {
 	_graph->pimpSubTree(this, &Element::hide, &Node::isVisible,true);
+	_graph->pimpSubTree(this, &Element::unhighlight);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
