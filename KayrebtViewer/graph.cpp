@@ -99,8 +99,6 @@ Graph::~Graph()
 	gvFreeLayout(_gv_con, _graph);
 	_graphviz.unlock();
 	agclose(_graph);
-	qDeleteAll(_nodes);
-	qDeleteAll(_edges);
 }
 
 void Graph::build()
