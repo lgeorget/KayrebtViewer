@@ -11,7 +11,6 @@
 #include <QGraphicsScene>
 #include <gvc.h>
 #include <QGraphicsScene>
-#include <QMap>
 #include <QPair>
 #include <QFont>
 #include <QMutex>
@@ -191,6 +190,7 @@ private:
 	 * \param v the GraphViz edge to add
 	 */
 	void addEdge(Agedge_t* v);
+
 	/**
 	 * \brief Sets some of the diagram's attributes to default values.
 	 *
@@ -213,30 +213,6 @@ private:
 	 * \brief the resolution DPI asked for
 	 */
 	qreal _dpi;
-	/**
-	 * \brief the nodes of the diagram, indexed by the GraphViz nodes' ids
-	 *
-	 * This structure can be used to get a pointer to a Node from the
-	 * corresponding Agnode_t pointer.
-	 * Example:
-	 *
-	 *     Node* getNodeFromAgnode_t(Agnode_t* n) {
-	 *         return _nodes[n->id];
-	 *     }
-	 */
-	QMap<Agnode_t*,Node*> _nodes;
-	/**
-	 * \brief the edges of the diagram, indexed by the GraphViz edges' ids
-	 *
-	 * This structure can be used to get a pointer to a Edge from the
-	 * corresponding Agedge_t pointer.
-	 * Example:
-	 *
-	 *     Edge* getEdgeFromAgedge_t(Agedge_t* e) {
-	 *         return _edges[e->id];
-	 *     }
-	 */
-	QMap<Agedge_t*,Edge*> _edges;
 	/**
 	 * \brief the file (in GraphViz format) from which the diagram is read
 	 */

@@ -32,6 +32,44 @@ const QFont Graph::MONOSPACE_FONT = QFont("Monospace", 15, QFont::Normal);
 
 QMutex Graph::_graphviz;
 
+namespace {
+extern "C" {
+	typedef struct
+	{
+		Agrec_t h;
+		Node* node;
+	} Kayrebtnodeinfo_t;
+
+	typedef struct
+	{
+		Agrec_t h;
+		Edge* edge;
+	} Kayrebtedgeinfo_t;
+}
+
+	inline Node* getNode(Agnode_t* n) {
+		Kayrebtnodeinfo_t* k = reinterpret_cast<Kayrebtnodeinfo_t*>(aggetrec(n,"kayrebt",false));
+		return k ? k->node : nullptr;
+	}
+
+	inline void setNode(Agnode_t* n, Node* node) {
+		Kayrebtnodeinfo_t* k = reinterpret_cast<Kayrebtnodeinfo_t*>(aggetrec(n,"kayrebt",false));
+		if (k)
+			k->node = node;
+	}
+
+	inline Edge* getEdge(Agedge_t* e) {
+		Kayrebtedgeinfo_t* k = reinterpret_cast<Kayrebtedgeinfo_t*>(aggetrec(e,"kayrebt",false));
+		return k ? k->edge : nullptr;
+	}
+
+	inline void setEdge(Agedge_t* e, Edge* edge) {
+		Kayrebtedgeinfo_t* k = reinterpret_cast<Kayrebtedgeinfo_t*>(aggetrec(e,"kayrebt",false));
+		if (k)
+			k->edge = edge;
+	}
+}
+
 Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsScene(parent), _id(id), _gv_con(Viewer::GRAPHVIZ_CONTEXT), _graph(), _filename(filename)
 {
 	std::FILE* fp = fopen(qPrintable(filename), "r");
@@ -42,6 +80,8 @@ Graph::Graph(quint64 id, const QString& filename, QObject* parent) : QGraphicsSc
 	if (!_graph)
 		throw std::runtime_error("Couldn't parse graph from input file");
 
+	aginit(_graph, AGNODE, "kayrebt", sizeof(Kayrebtnodeinfo_t), false);
+	aginit(_graph, AGEDGE, "kayrebt", sizeof(Kayrebtedgeinfo_t), false);
 	_dpi = QString(agget(_graph,"dpi")).toDouble(); // cannot access through GD_drawing(_graph)->_dpi as the layout isn't done yet
 	if (_dpi == 0)
 		_dpi = 96.0;
@@ -87,10 +127,10 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 	waitingNodes.enqueue(v);
 	while (!waitingNodes.empty()) {
 		Agnode_t* currentNode = waitingNodes.dequeue();
-		f(*_nodes[currentNode]);
+		f(*getNode(currentNode));
 		if (incomingEdgesAreConcerned) {
 			for (Agedge_t* in = agfstin(_graph,currentNode) ; in ; in = agnxtin(_graph,in)) {
-				f(*_edges[in]);
+				f(*getEdge(in));
 			}
 		}
 
@@ -99,12 +139,12 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 			bool toProcess = true;
 			if (test != nullptr) {
 				for (Agedge_t* in = agfstin(_graph,nextNode) ; in && toProcess ; in = agnxtin(_graph,in)) {
-					Node* tested = _nodes[agtail(in)];
+					Node* tested = getNode(agtail(in));
 					if (test(*tested))
 						toProcess = false;
 				}
 			}
-			f(*_edges[e]);
+			f(*getEdge(e));
 			if (toProcess && !waitingNodes.contains(nextNode) && !finishedNodes.contains(nextNode)) {
 				waitingNodes.enqueue(nextNode);
 			}
@@ -116,7 +156,7 @@ void Graph::pimpSubTree(Node *n, std::function<void (Element &)> f, std::functio
 void Graph::pimpSubTree(Edge *e, std::function<void (Element &)> f, std::function<bool (Element&)> test)
 {
 	f(*e);
-	Node *n = _nodes[aghead(e->_gv_edge)];
+	Node *n = getNode(aghead(e->_gv_edge));
 	if (!test(*n))
 		pimpSubTree(n,f,test);
 }
@@ -167,28 +207,28 @@ void Graph::addNode(Agnode_t* v)
 {
 	Node* node = new Node(v,this);
 	addItem(node);
-	_nodes[v] = node;
+	setNode(v,node);
 }
 
 void Graph::addEdge(Agedge_t* e)
 {
 	Edge* edge = new Edge(e,this);
 	addItem(edge);
-	_edges[e] = edge;
+	setEdge(e,edge);
 }
 
 bool Graph::hasHighlightedAncestor(const Node* n)
 {
 	bool ancestorHighlighted = false;
 	for (Agedge_t* in = agfstin(_graph,n->_gv_node) ; in && !ancestorHighlighted ; in = agnxtin(_graph,in)) {
-		ancestorHighlighted = _edges[in]->isHighlighted();
+		ancestorHighlighted = getEdge(in)->isHighlighted();
 	}
 	return ancestorHighlighted;
 }
 
 bool Graph::hasHighlightedAncestor(const Edge* e)
 {
-	return hasHighlightedAncestor(_nodes[agtail(e->_gv_edge)]);
+	return hasHighlightedAncestor(getNode(agtail(e->_gv_edge)));
 }
 
 void Graph::callOtherGraph(QString url)
@@ -230,12 +270,12 @@ void Graph::reset()
 {
 	for (Agnode_t* v = agfstnode(_graph) ; v ; v = agnxtnode(_graph,v)) {
 		agsafeset(v, "style", "normal", "normal");
-		_nodes[v]->setVisible(true);
-		_nodes[v]->unhighlight();
+		getNode(v)->setVisible(true);
+		getNode(v)->unhighlight();
 		for (Agedge_t* e = agfstout(_graph,v) ; e ; e = agnxtout(_graph,e)) {
 			agsafeset(e, "style", "normal", "normal");
-			_edges[e]->setVisible(true);
-			_edges[e]->unhighlight();
+			getEdge(e)->setVisible(true);
+			getEdge(e)->unhighlight();
 		}
 	}
 }
