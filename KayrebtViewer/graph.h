@@ -15,6 +15,8 @@
 #include <QFont>
 #include <QMutex>
 #include <functional>
+#include <vector>
+#include <memory>
 
 class Node;
 class Edge;
@@ -221,6 +223,21 @@ private:
 	int _sourceLineNumber;
 
 	static QMutex _graphviz;
+
+	/**
+	 * @brief contains pointers to nodes for deallocation
+	 *
+	 * Nodes are not default-constructible, nor copy-constructible,
+	 * therefore, we can only store pointers to them.
+	 */
+	std::vector<std::unique_ptr<Node>> _nodes;
+	/**
+	 * @brief contains pointers to edges for deallocation
+	 *
+	 * Edges are not default-constructible, nor copy-constructible,
+	 * therefore, we can only store pointers to them.
+	 */
+	std::vector<std::unique_ptr<Edge>> _edges;
 
 };
 

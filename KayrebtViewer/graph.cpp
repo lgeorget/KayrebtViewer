@@ -6,6 +6,8 @@
  */
 #include <cstdio>
 #include <cstring>
+#include <vector>
+#include <memory>
 #include <QString>
 #include <exception>
 #include <QGraphicsPathItem>
@@ -203,14 +205,16 @@ QString Graph::getFilename() const
 
 void Graph::addNode(Agnode_t* v)
 {
-	Node* node = new Node(v,this);
+	_nodes.emplace_back(new Node(v,this));
+	Node* node = _nodes.back().get();
 	addItem(node);
 	setNode(v,node);
 }
 
 void Graph::addEdge(Agedge_t* e)
 {
-	Edge* edge = new Edge(e,this);
+	_edges.emplace_back(new Edge(e,this));
+	Edge* edge = _edges.back().get();
 	addItem(edge);
 	setEdge(e,edge);
 }
