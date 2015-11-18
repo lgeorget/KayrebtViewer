@@ -22,6 +22,7 @@ protected:
 	void resizeEvent(QResizeEvent *e);
 
 signals:
+	void titleChanged(QString title);
 
 public slots:
 	void openSourceFile(const QString& filename);

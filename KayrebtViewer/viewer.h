@@ -61,6 +61,7 @@ public slots:
 	 */
 	void openGraph(const QString &filename);
 	void openSourceFile(QMdiSubWindow* window);
+	void adaptSourcePanelSize();
 
 signals:
 	/**

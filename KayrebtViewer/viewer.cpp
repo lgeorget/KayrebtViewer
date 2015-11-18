@@ -45,7 +45,7 @@ Viewer::Viewer(QWidget *parent) :
 	_databaseDock->setWidget(_dbviewer);
 
 	// force the source viewer closed before first graph is opened
-	ui->sources->updateSize();
+	ui->sourcePanel->setMaximumWidth(0);
 
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
@@ -55,6 +55,7 @@ Viewer::Viewer(QWidget *parent) :
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
 //	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
+	connect(ui->sourceText, SIGNAL(textChanged()), this, SLOT(adaptSourcePanelSize()));
 }
 
 void Viewer::openGraph()
@@ -63,16 +64,25 @@ void Viewer::openGraph()
 			  "GraphViz files (*.dot)"));
 }
 
+void Viewer::adaptSourcePanelSize()
+{
+	if (ui->sourceText->document()->isEmpty())
+		ui->sourcePanel->setMaximumWidth(0);
+	else
+		ui->sourcePanel->setMaximumWidth(QWIDGETSIZE_MAX);
+}
+
 void Viewer::openSourceFile(QMdiSubWindow* window)
 {
 	if (window) {
 		Drawing* d = static_cast<Drawing*>(window->widget());
 		QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
-		ui->sources->openSourceFile(srcFilename);
+		ui->sourceText->openSourceFile(srcFilename);
 		// ui->sources->gotoLine(d->getGraph()->getSourceLine()); // implicitly done by highlightLines below
-		ui->sources->highlightLines(d->getGraph()->getSourceLine()-1,d->getGraph()->getSourceLine());
+		ui->sourceText->highlightLines(d->getGraph()->getSourceLine()-1,d->getGraph()->getSourceLine());
 	} else if (ui->docs->subWindowList().isEmpty()) {
-		ui->sources->clear();
+		ui->sourceText->clear();
+		ui->sourceTitle->clear();
 	}
 }
 
@@ -142,8 +152,8 @@ bool Viewer::event(QEvent *event)
 		return true;
 	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
 		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
-		ui->sources->openSourceFile(_srcTree + realEvent->getFile());
-		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
+		ui->sourceText->openSourceFile(_srcTree + realEvent->getFile());
+		ui->sourceText->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
 		event->accept();
 		return true;
 	} else {

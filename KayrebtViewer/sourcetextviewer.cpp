@@ -53,11 +53,7 @@ void SourceTextViewer::highlightLines(int start, int end, bool centerOnScroll)
 
 void SourceTextViewer::updateSize()
 {
-	if (document()->isEmpty()) {
-		setFixedWidth(0);
-	} else {
-		setMinimumSize(QFontMetrics(document()->defaultFont()).width('m') * CHARACTERS_PER_LINE + lineNumberAreaWidth(), 0);
-	}
+	setMinimumSize(QFontMetrics(document()->defaultFont()).width('m') * CHARACTERS_PER_LINE + lineNumberAreaWidth(), 0);
 }
 
 int SourceTextViewer::lineNumberAreaWidth()
@@ -134,6 +130,7 @@ void SourceTextViewer::openSourceFile(const QString& filename)
 		setPlainText(file.readAll());
 		file.close();
 		setDocumentTitle(filename);
+		emit titleChanged(filename);
 		highlighter->setDocument(document());
 	}
 }

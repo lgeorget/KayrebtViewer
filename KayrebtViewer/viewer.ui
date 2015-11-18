@@ -14,7 +14,7 @@
    <string>Kayrebt::Viewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -49,16 +49,29 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="SourceTextViewer" name="sources">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
+      <widget class="QWidget" name="sourcePanel" native="true">
+       <layout class="QVBoxLayout" name="sourceLayout">
+        <item>
+         <widget class="SourceTextViewer" name="sourceText">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="sourceTitle">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -70,7 +83,7 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>33</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -120,8 +133,28 @@
    <class>SourceTextViewer</class>
    <extends>QPlainTextEdit</extends>
    <header>sourcetextviewer.h</header>
+   <slots>
+    <signal>titleChanged(QString)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sourceText</sender>
+   <signal>titleChanged(QString)</signal>
+   <receiver>sourceTitle</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>680</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>670</x>
+     <y>565</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
