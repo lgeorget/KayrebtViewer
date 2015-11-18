@@ -36,9 +36,10 @@ Node::Node(Agnode_t *v, Graph *graph) :
 	if (!line.isEmpty()) {
 		_line = line.toInt();
 	}
+	_file = QString(agget(_gv_node, "filename"));
 
 	setAcceptHoverEvents(true);
-	connect(this, SIGNAL(nodeWithLineInformationHovered(int)), _graph, SLOT(highlightLineInSourceCode(int)));
+	connect(this, SIGNAL(nodeWithLineInformationHovered(int,QString&)), _graph, SLOT(highlightLineInSourceCode(int,QString&)));
 }
 
 QAbstractGraphicsShapeItem *Node::draw()
@@ -94,6 +95,7 @@ QAbstractGraphicsShapeItem *Node::draw()
 
 Node::~Node()
 {
+	qDebug() << "Destructed node " << _label;
 	delete _label;
 }
 
@@ -121,8 +123,8 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
 	_graph->pimpSubTree(this,&Element::highlight);
-	if (_line)
-		emit nodeWithLineInformationHovered(_line);
+	if (_line && _file.size() != 0)
+		emit nodeWithLineInformationHovered(_line, _file);
 }
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *)

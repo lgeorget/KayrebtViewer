@@ -98,7 +98,7 @@ public slots:
 	void mousePressEvent(QGraphicsSceneMouseEvent* UNUSED);
 
 signals:
-	void nodeWithLineInformationHovered(int line);
+	void nodeWithLineInformationHovered(int line, QString& filename);
 
 private:
 	/**
@@ -115,6 +115,7 @@ private:
 	QString _url;
 
 	int _line = 0;
+	QString _file;
 
 	/**
 	 * @brief Draws the Node, using GraphViz's layout information

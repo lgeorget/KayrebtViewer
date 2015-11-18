@@ -142,6 +142,7 @@ bool Viewer::event(QEvent *event)
 		return true;
 	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
 		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
+		ui->sources->openSourceFile(_srcTree + realEvent->getFile());
 		ui->sources->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
 		event->accept();
 		return true;

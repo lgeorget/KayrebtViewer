@@ -258,9 +258,9 @@ void Graph::callOtherGraph(QString url)
 			qApp->sendEvent(topLevels[i], &hyperlink);
 }
 
-void Graph::highlightLineInSourceCode(int line)
+void Graph::highlightLineInSourceCode(int line, QString& file)
 {
-	NodeHoverEvent hovering(line);
+	NodeHoverEvent hovering(line,file);
 	//qDebug() << "new Hyperlink event " << &hyperlink;
 	QList<QWidget*> topLevels = qApp->topLevelWidgets();
 	for (int i=0 ; i<topLevels.size() ; i++)

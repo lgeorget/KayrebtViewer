@@ -165,7 +165,7 @@ public slots:
 	void reset();
 	void build();
 
-	void highlightLineInSourceCode(int line);
+	void highlightLineInSourceCode(int line, QString& file);
 
 signals:
 	void graphBuilt();
