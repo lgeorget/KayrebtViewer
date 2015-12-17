@@ -151,7 +151,6 @@ QModelIndex GraphItemModel::findGraphItem(quint64 id) const
 	while (!items.isEmpty() && !found) {
 		item = items[0];
 		items.removeFirst();
-		qDebug() << "Looking for " << id << " | reached " << item->getId();
 		if (item->getId() == id) {
 			found = true;
 		} else {

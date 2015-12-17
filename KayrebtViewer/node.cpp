@@ -95,7 +95,6 @@ QAbstractGraphicsShapeItem *Node::draw()
 
 Node::~Node()
 {
-	qDebug() << "Destructed node " << _label;
 	delete _label;
 }
 
