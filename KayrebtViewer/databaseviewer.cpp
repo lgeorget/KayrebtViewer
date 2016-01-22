@@ -23,6 +23,14 @@ DatabaseViewer::DatabaseViewer(GraphItemModel *history, QWidget *parent) :
 	_dbBackend.setDatabaseName(dbFile);
 	_dbFilter = new DatabaseSortFilterProxyModel(this);
 
+	_fs = new QFileSystemModel(this);
+	_fs->setRootPath(QSettings().value("diagrams dir").toString());
+	_ui->fsView->setModel(_fs);
+	_ui->fsView->setRootIndex(_fs->index(_fs->rootPath()));
+	for (int col=1 ; col<_fs->columnCount() ; col++)
+		_ui->fsView->hideColumn(col);
+	connect(_ui->fsView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(fsSymbolDoubleClicked(QModelIndex)));
+
 	if (_dbBackend.open()) {
 		_db = new QSqlTableModel(this, _dbBackend);
 		_db->setTable("global_symbols");
@@ -88,6 +96,22 @@ void DatabaseViewer::symbolDoubleClicked(const QAbstractItemModel* model, const 
 			model->sibling(row, 2, index).data().toString() + "/" +
 			model->sibling(row, 0, index).data().toString() + ".dot";
 	emit graphSelected(graph);
+}
+
+void DatabaseViewer::fsSymbolDoubleClicked(const QModelIndex& index)
+{
+	QSettings settings;
+	QFileInfo file = _fs->fileInfo(index);
+	if (file.exists() && file.isFile() && file.suffix() == "dot") {
+		QString diagPath = file.canonicalFilePath();
+		QString alldiags = settings.value("diagrams dir").toString();
+		QString srcPath = file.canonicalPath()
+							  .remove(alldiags)
+							  .prepend(settings.value("source tree").toString());
+
+		emit graphSelected(diagPath);
+		emit fileSelected(srcPath);
+	}
 }
 
 void DatabaseViewer::databaseSymbolDoubleClicked(const QModelIndex& index)

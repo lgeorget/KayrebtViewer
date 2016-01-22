@@ -11,6 +11,7 @@
 #include <QTableView>
 #include <QSqlTableModel>
 #include <QSqlDatabase>
+#include <QFileSystemModel>
 #include "databasesortfilterproxymodel.h"
 
 namespace Ui {
@@ -119,6 +120,8 @@ private:
 	 * @brief the database of symbols
 	 */
 	QSqlDatabase _dbBackend;
+
+	QFileSystemModel* _fs;
 	/**
 	 * @brief the sorter and filter between the SQL model and the view
 	 * to enable multifiltering and sorting on the symbols
@@ -146,6 +149,7 @@ private slots:
 	 * @param index the symbol double-clicked.
 	 */
 	void databaseSymbolDoubleClicked(const QModelIndex& index);
+	void fsSymbolDoubleClicked(const QModelIndex& index);
 	/**
 	 * @brief Triggered when an symbol is double-clicked in the history
 	 * view.

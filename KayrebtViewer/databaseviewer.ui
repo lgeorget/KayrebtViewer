@@ -20,10 +20,10 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <property name="movable">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="dbTab">
    <attribute name="title">
@@ -134,6 +134,16 @@
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="fsTab">
+   <attribute name="title">
+    <string>Filesystem</string>
+   </attribute>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QTreeView" name="fsView"/>
     </item>
    </layout>
   </widget>

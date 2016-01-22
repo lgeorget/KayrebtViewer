@@ -261,7 +261,6 @@ void Graph::callOtherGraph(QString url)
 void Graph::highlightLineInSourceCode(int line, QString& file)
 {
 	NodeHoverEvent hovering(line,file);
-	//qDebug() << "new Hyperlink event " << &hyperlink;
 	QList<QWidget*> topLevels = qApp->topLevelWidgets();
 	for (int i=0 ; i<topLevels.size() ; i++)
 		if (topLevels[i]->isActiveWindow()) // send the event to the main window

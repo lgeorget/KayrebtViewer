@@ -50,11 +50,11 @@ Viewer::Viewer(QWidget *parent) :
 	connect(ui->actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openGraph()));
 	connect(_dbviewer, SIGNAL(graphSelected(QString)), this, SLOT(openGraph(QString)));
-//	connect(_dbviewer, SIGNAL(fileSelected(QString)), ui->sources, SLOT(openSourceFile(QString)));
-//	connect(ui->docs, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(openSourceFile(QMdiSubWindow*)));
+	//connect(_dbviewer, SIGNAL(fileSelected(QString)), ui->sourceText, SLOT(openSourceFile(QString)));
+	connect(ui->docs, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(openSourceFile(QMdiSubWindow*)));
 	connect(_dbviewer, SIGNAL(fileSelected(QString)), _srcTreeWidget, SLOT(selectFile(QString)));
 	connect(_srcTreeWidget, SIGNAL(filenameSelected(QString,QString)), _dbviewer, SLOT(selectFileAndDirectory(QString,QString)));
-//	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
+	connect(this, SIGNAL(newGraphOpen(GraphItem)), _dbviewer, SLOT(addGraphToHistory(GraphItem)));
 	connect(ui->sourceText, SIGNAL(textChanged()), this, SLOT(adaptSourcePanelSize()));
 }
 

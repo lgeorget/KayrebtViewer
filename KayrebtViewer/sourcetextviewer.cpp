@@ -124,6 +124,7 @@ void SourceTextViewer::openSourceFile(const QString& filename)
 	if (!filename.isEmpty()) {
 		QFile file(filename);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			qDebug() << filename;
 			QMessageBox::critical(this, tr("Kayrebt::Viewer"), tr("The source file you have selected could not be opened."));
 			return;
 		}
