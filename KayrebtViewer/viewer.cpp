@@ -74,10 +74,11 @@ void Viewer::adaptSourcePanelSize()
 
 void Viewer::openSourceFile(QMdiSubWindow* window)
 {
-	if (window) {
+	if (window && !window->property("source disabled").toBool()) {
 		Drawing* d = static_cast<Drawing*>(window->widget());
 		QString srcFilename = _srcTree + d->getGraph()->getSourceFilename();
-		ui->sourceText->openSourceFile(srcFilename);
+		if (!ui->sourceText->openSourceFile(srcFilename))
+			window->setProperty("source disabled",true);
 		// ui->sources->gotoLine(d->getGraph()->getSourceLine()); // implicitly done by highlightLines below
 		ui->sourceText->highlightLines(d->getGraph()->getSourceLine()-1,d->getGraph()->getSourceLine());
 	} else if (ui->docs->subWindowList().isEmpty()) {
@@ -152,8 +153,10 @@ bool Viewer::event(QEvent *event)
 		return true;
 	} else if (event->type() == NodeHoverEvent::NODE_HOVER_EVENT) {
 		NodeHoverEvent* realEvent = static_cast<NodeHoverEvent*>(event);
-		ui->sourceText->openSourceFile(_srcTree + realEvent->getFile());
-		ui->sourceText->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
+		if (!ui->docs->activeSubWindow()->property("source disabled").toBool()) {
+			ui->sourceText->openSourceFile(_srcTree + realEvent->getFile());
+			ui->sourceText->highlightLines(realEvent->getLineNumber(), realEvent->getLineNumber(), false);
+		}
 		event->accept();
 		return true;
 	} else {

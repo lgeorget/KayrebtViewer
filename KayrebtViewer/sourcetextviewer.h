@@ -25,7 +25,7 @@ signals:
 	void titleChanged(QString title);
 
 public slots:
-	void openSourceFile(const QString& filename);
+	bool openSourceFile(const QString& filename);
 	void highlightLines(int start, int end, bool centerOnScroll = true);
 	void updateSize();
 
