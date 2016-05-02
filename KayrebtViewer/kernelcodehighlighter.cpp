@@ -69,7 +69,7 @@ KernelCodeHighlighter::KernelCodeHighlighter(QTextDocument *parent) :
 	highlightingRules.append(rule);
 
 	functionFormat.setForeground(Qt::darkBlue);
-	rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\(.*\\))");
+	rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\(.*)");
 	rule.format = functionFormat;
 	highlightingRules.append(rule);
 
